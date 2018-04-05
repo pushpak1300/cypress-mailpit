@@ -1,0 +1,11 @@
+version: '3'
+services:
+  cypress:
+    build:
+      context: ../
+      dockerfile: ./test-server/Dockerfile
+    depends_on: 
+      - web
+    environment: 
+      - CYPRESS_BASE_URL=http://web/cypress-mh-tests/
+      - CYPRESS_mailHogUrl=http://mailhog:8025

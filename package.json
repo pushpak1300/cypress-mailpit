@@ -1,0 +1,33 @@
+{
+  "name": "cypress-mailhog",
+  "version": "2.2.0",
+  "description": "Cypress Commands for MailHog 🌳🐗",
+  "main": "index.js",
+  "types": "types/index.d.ts",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/SMenigat/cypress-mailhog.git"
+  },
+  "keywords": [
+    "JavaScript",
+    "Testing",
+    "Cypress.io",
+    "MailHog"
+  ],
+  "author": "Samuel Menigat <samuel.menigat@gmail.com>",
+  "license": "mit",
+  "bugs": {
+    "url": "https://github.com/SMenigat/cypress-mailhog/issues"
+  },
+  "homepage": "https://github.com/SMenigat/cypress-mailhog#readme",
+  "devDependencies": {
+    "cypress": "12.13.0",
+    "eslint": "^4.19.1",
+    "eslint-config-google": "^0.9.1",
+    "prettier": "^1.11.1",
+    "typescript": "^4.3.5"
+  }
+}
