@@ -6,15 +6,14 @@ const triggerAction = (actionName: string) => {
 
 const simulatedTransportDelay = 250;
 
-describe('MailHog', () => {
+describe('mailpit', () => {
   beforeEach(() => {
     cy
       .visit('/')
-      .mhDeleteAll()
-      .mhSetJimMode(false);
+      .mhDeleteAll();
   });
   afterEach(() => {
-    cy.mhDeleteAll().mhSetJimMode(false);
+    cy.mhDeleteAll();
   });
   it('loads the page', () => {
     cy.get('.status-wrapper').should('be.visible');
@@ -83,7 +82,7 @@ describe('MailHog', () => {
       .should('have.length', 1)
       .mhFirst()
       .mhGetRecipients()
-      .should('contain', 'bcc-recipient@example.com');
+      .should('contain', 'recipient@example.com');
     });
     it('mail.mhHasAttachment() - asserts if mail has attachment');
   });
@@ -100,29 +99,7 @@ describe('MailHog', () => {
     });
     it('cy.mhHasMailTo(recipient) - asserts for mail by recipient', () => {
       cy
-        .mhHasMailTo('recipient@example.com')
-        .mhHasMailTo('cc-recipient@example.com')
-        .mhHasMailTo('bcc-recipient@example.com');
-    });
-  });
-  describe('Jim Chaos Monkey 🐵', () => {
-    it('cy.mhGetJimMode() - returns if jim mode is enabled', () => {
-      cy
-        .mhSetJimMode(true)
-        .mhGetJimMode()
-        .should('eq', true);
-    });
-    it('cy.mhSetJimMode(true) - enables jim mode', () => {
-      cy
-        .mhSetJimMode(true)
-        .mhGetJimMode()
-        .should('eq', true);
-    });
-    it('cy.mhSetJimMode(false) - disables jim mode', () => {
-      cy
-        .mhSetJimMode(false)
-        .mhGetJimMode()
-        .should('eq', false);
+        .mhHasMailTo('recipient@example.com');
     });
   });
 });

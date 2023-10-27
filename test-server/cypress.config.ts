@@ -8,6 +8,6 @@ export default defineConfig({
       return require('./cypress/plugins/index.js')(on, config)
     },
     baseUrl: 'http://localhost:3000/cypress-mh-tests/',
-    mailHogUrl: 'http://localhost:8090',
+    mailpitUrl: 'http://localhost:8090',
   },
 })

@@ -1,7 +1,7 @@
 {
-  "name": "cypress-mailhog",
+  "name": "cypress-mailpit",
   "version": "2.2.0",
-  "description": "Cypress Commands for MailHog 🌳🐗",
+  "description": "Cypress Commands for mailpit 🌳🐗",
   "main": "index.js",
   "types": "types/index.d.ts",
   "scripts": {
@@ -9,20 +9,20 @@
   },
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/SMenigat/cypress-mailhog.git"
+    "url": "git+https://github.com/pushpak1300/cypress-mailpit"
   },
   "keywords": [
     "JavaScript",
     "Testing",
     "Cypress.io",
-    "MailHog"
+    "mailpit"
   ],
   "author": "Samuel Menigat <samuel.menigat@gmail.com>",
   "license": "mit",
   "bugs": {
-    "url": "https://github.com/SMenigat/cypress-mailhog/issues"
+    "url": "https://github.com/pushpak1300/cypress-mailpit/issues"
   },
-  "homepage": "https://github.com/SMenigat/cypress-mailhog#readme",
+  "homepage": "https://github.com/pushpak1300/cypress-mailpit#readme",
   "devDependencies": {
     "cypress": "12.13.0",
     "eslint": "^4.19.1",
