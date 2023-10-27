@@ -1,4 +1,4 @@
-declare namespace mailhog {
+declare namespace mailpit {
   interface Messages {
     total: number;
     count: number;

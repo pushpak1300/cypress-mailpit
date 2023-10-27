@@ -1,6 +1,6 @@
-# cypress-mailhog
+# cypress-mailpit
 
-A collection of useful Cypress commands for MailHog 🐗.
+A collection of useful Cypress commands for mailpit 🐗.
 
 This package supports TypeScript out of the box. 
 
@@ -9,56 +9,56 @@ This package supports TypeScript out of the box.
 Install this package via NPM:
 
 ```bash
-npm install cypress-mailhog
+npm install cypress-mailpit
 ```
 
 Include this package into your Cypress command file:
 
 ```JavaScript
 // cypress/support/commands
-import 'cypress-mailhog';
+import 'cypress-mailpit';
 ```
 
 ###### Before cypress 10.0.0
 
-Add the base url of your MailHog installation to your `cypress.json`:
+Add the base url of your mailpit installation to your `cypress.json`:
 
 ```json
 {
   ...
-  "mailHogUrl": "http://localhost:8090"
+  "mailpitUrl": "http://localhost:8090"
 }
 ```
 
 ###### After cypress 10.0.0
 
-Add the base url of your MailHog installation in the `e2e` block of your `cypress.config.ts` / `cypress.config.js`:
+Add the base url of your mailpit installation in the `e2e` block of your `cypress.config.ts` / `cypress.config.js`:
 
 ```typescript
 export default defineConfig({
     projectId: "****",
     env: { 
-        mailHogUrl: "http://localhost:8090/",
+        mailpitUrl: "http://localhost:8090/",
     }
 })
 ```
 
-If your MailHog instance uses authentication, add `mailHogAuth` to your cypress `env` config:
+If your mailpit instance uses authentication, add `mailpitAuth` to your cypress `env` config:
 
 ```json
 {
   ...
-  "mailHogAuth": {"user": "mailhog username", "pass": "mailhog password"}
+  "mailpitAuth": {"user": "mailpit username", "pass": "mailpit password"}
 }
 ```
 
-or add `mailHogUsername` and `mailHogPassword` in cypress env config
+or add `mailpitUsername` and `mailpitPassword` in cypress env config
 
 ```json
 {
   ...
-  "mailHogUsername": "mailhog username",
-  "mailHogPassword": "mailhog password"
+  "mailpitUsername": "mailpit username",
+  "mailpitPassword": "mailpit password"
 }
 ```
 
@@ -66,7 +66,7 @@ or add `mailHogUsername` and `mailHogPassword` in cypress env config
 ### Mail Collection
 #### mhGetAllMails( limit=50, options={timeout=defaultCommandTimeout} ) 
 
-Yields an array of all the mails stored in MailHog. This retries automatically until mails are found (or until timeout is reached). 
+Yields an array of all the mails stored in mailpit. This retries automatically until mails are found (or until timeout is reached). 
 
 ```JavaScript
 cy
@@ -113,7 +113,7 @@ cy
 ``` 
 #### mhDeleteAll()
 
-Deletes all stored mails from MailHog.
+Deletes all stored mails from mailpit.
 
 ```JavaScript
 cy.mhDeleteAll();
@@ -195,29 +195,6 @@ Asserts if there is a mail to given recipient (looks for "To", "CC" and "BCC").
 cy.mhHasMailTo('recipient@example.com');
 ``` 
 
-
-### Jim Chaos Monkey 🐵
-
-#### mhGetJimMode()
-
-Returns if Jim is enabled / disabled.
-
-```JavaScript
-cy
-  .mhGetJimMode()
-  .should('eq', true);
-```
-#### mhSetJimMode( enabled )
-
-Enables / Disables Jim chaos monkey.
-
-```JavaScript
-cy
-  .mhSetJimMode(true)
-  .mhGetJimMode()
-  .should('eq', true);
-```
-
 ## Package Development
 
 ### Start Local Test Server
@@ -243,7 +220,7 @@ docker-compose up
 
 Open the test page in your browser: [http://localhost:3000/cypress-mh-tests/](http://localhost:3000/cypress-mh-tests/)
 
-Open MailHog in your browser: [http://localhost:8090/](http://localhost:8090/)
+Open mailpit in your browser: [http://localhost:8090/](http://localhost:8090/)
 
 Open the Cypress testclient.
 
