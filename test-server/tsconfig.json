@@ -6,7 +6,8 @@
       "dom"
     ],
     "types": [
-      "cypress"
+      "cypress",
+      "node"
     ]
   },
   "include": [

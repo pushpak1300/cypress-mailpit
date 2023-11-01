@@ -41,8 +41,8 @@ describe('mailpit', () => {
     it('cy.mhDeleteAll() - delets all mails from MailCatcher', () => {
       cy
         .wait(simulatedTransportDelay) // make sure to wait for delayed messages before cleaning up
-        .mhDeleteAll()
-        .mhGetAllMails()
+        .mhDeleteAll();
+      cy.mhGetAllMails()
         .should('have.length', 0);
     });
   });

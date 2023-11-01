@@ -1,15 +1,13 @@
 {
   "compilerOptions": {
     "target": "es5",
-    "lib": [
-      "es5",
-      "dom"
-    ],
-    "types": [
-      "cypress"
-    ]
+    "lib": ["es6", "dom"],
+    "types": ["cypress","node"],
+    "strict": true,
+    "esModuleInterop": true
   },
   "include": [
-    "**/*.ts",
+    "index.ts",
+    "types/*.d.ts"
   ]
 }
