@@ -17,6 +17,16 @@ services:
    devices:
      - /dev/fuse:/dev/fuse
 
+  cypress:
+    build:
+      context: ../
+      dockerfile: ./test-server/Dockerfile
+    depends_on:
+      - web
+    environment:
+      - CYPRESS_BASE_URL=http://web/cypress-mh-tests/
+      - CYPRESS_mailpitUrl=http://mailpit:8025
+
   mailpit:
     image: axllent/mailpit
     ports:
