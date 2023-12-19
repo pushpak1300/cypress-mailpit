@@ -2,6 +2,15 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+### [0.0.3](https://github.com/pushpak1300/cypress-mailpit/compare/v0.0.2...v0.0.3) (2023-12-19)
+
+
+### Features
+
+* add npm instead of yarn and remove duplicate docker file ([b81254a](https://github.com/pushpak1300/cypress-mailpit/commit/b81254a3a13cb0905fc4e85fdc016585d184fb4e))
+* add typescript ([e3c9fe2](https://github.com/pushpak1300/cypress-mailpit/commit/e3c9fe2bef26107d005b9777a4856027decb38cd))
+* refactor to typescript ([d079a5d](https://github.com/pushpak1300/cypress-mailpit/commit/d079a5d5d662ad8610b65122d02199d789ca7bcc))
+
 ### 0.0.2 (2023-10-27)
 
 

@@ -1,6 +1,6 @@
 {
   "name": "cypress-mailpit",
-  "version": "0.0.2",
+  "version": "0.0.3",
   "description": "Cypress Commands for mailpit 🌳🐗",
   "main": "index.js",
   "types": "types/index.d.ts",
