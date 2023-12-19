@@ -20,7 +20,7 @@ interface Message {
   To: Recipient[];
 }
 
-interface MessageApiResponse {
+interface MessagesApiResponse {
   messages: Message[];
   messages_count: number;
   start: number;
@@ -28,6 +28,8 @@ interface MessageApiResponse {
   total: number;
   unread: number;
 }
+
+type MessageApiResponse = Message & { HTMl: string };
 
 interface RequestOptions {
   timeout?: number;
@@ -43,19 +45,34 @@ const mhApiUrl = (path:string) => {
   return `${basePath}/api${path}`;
 };
 
-let mhAuth: AuthType = Cypress.env('mailHogAuth');
-if (Cypress.env('mailHogUsername') && Cypress.env('mailHogPassword')) {
+let mhAuth: AuthType = Cypress.env('mailpitAuth');
+if (Cypress.env('mailPitUsername') && Cypress.env('mailPitPassword')) {
   mhAuth = {
-    'user': Cypress.env('mailHogUsername'),
-    'pass': Cypress.env('mailHogPassword'),
+    'user': Cypress.env('mailPitUsername'),
+    'pass': Cypress.env('mailPitPassword'),
   };
 }
 
-
-const fetchMessages = (limit: number): Cypress.Chainable<MessageApiResponse> => {
+const fetchMessages = (limit: number): Cypress.Chainable<MessagesApiResponse> => {
   return cy.request({
     method: 'GET',
     url: mhApiUrl(`/v1/messages?limit=${limit}`),
+    auth: mhAuth,
+  })
+  .then((response) => {
+    if (typeof response.body === 'string') {
+      return JSON.parse(response.body);
+    } else {
+      return response.body;
+    }
+  })
+  .then((parsed) => parsed.items);
+};
+
+const fetchMessage = (id: string): Cypress.Chainable<MessageApiResponse> => {
+  return cy.request({
+    method: 'GET',
+    url: mhApiUrl(`/v1/message/${id}`),
     auth: mhAuth,
   })
   .then((response) => {
@@ -106,9 +123,21 @@ Cypress.Commands.add('mhGetMailsBySubject', (subject: string, limit = 50, option
 Cypress.Commands.add('mhGetMailsByRecipient', (recipient: string, limit = 50, options: RequestOptions = {}) => retryFetchMessages(mails => mails.filter(mail => mail.To.some(recipientObj => recipientObj.Address === recipient)), limit, options));
 Cypress.Commands.add('mhGetMailsBySender', (from: string, limit = 50, options: RequestOptions = {}) => retryFetchMessages(mails => mails.filter(mail => mail.From.Address === from), limit, options));
 Cypress.Commands.add('mhGetSubject', { prevSubject: true }, (mail: Message) => cy.wrap(mail).its('Subject'));
-Cypress.Commands.add('mhGetBody', { prevSubject: true }, (mail: Message) => cy.wrap(mail).its('Snippet'));
+Cypress.Commands.add('mhGetBody', { prevSubject: true }, (mail: Message) => {
+  const messageId: string =  mail.ID;
+  fetchMessage(messageId)
+  .then((response) => {
+    return cy.wrap(response).its('HTML');
+  });
+});
 Cypress.Commands.add('mhGetSender', { prevSubject: true }, (mail: Message) => cy.wrap(mail.From).its('Address'));
-Cypress.Commands.add('mhGetRecipients', { prevSubject: true }, (mail: Message) => cy.wrap(mail.To.map(recipientObj => recipientObj.Address)));
+Cypress.Commands.add('mhGetRecipients', { prevSubject: true }, (mail: Message) => {
+  const recipients: string[] = []
+  mail.To.map(recipientObj => {
+    recipients.push(recipientObj.Address)
+  });
+  return cy.wrap(recipients);
+});
 Cypress.Commands.add('mhHasMailWithSubject', (subject: string) => cy.mhGetMailsBySubject(subject).should('not.have.length', 0));
 Cypress.Commands.add('mhHasMailFrom', (from: string) => cy.mhGetMailsBySender(from).should('not.have.length', 0));
 Cypress.Commands.add('mhHasMailTo', (recipient: string) => cy.mhGetMailsByRecipient(recipient).should('not.have.length', 0));
