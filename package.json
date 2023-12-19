@@ -3,10 +3,11 @@
   "version": "0.0.3",
   "description": "Cypress Commands for mailpit 🌳🐗",
   "main": "index.js",
-  "types": "types/index.d.ts",
+  "types": "cypress.d.ts",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
-    "release": "standard-version"
+    "release": "standard-version",
+    "cy:run": "cypress run --headless"
   },
   "repository": {
     "type": "git",
@@ -18,7 +19,7 @@
     "Cypress.io",
     "mailpit"
   ],
-  "author": "Samuel Menigat <samuel.menigat@gmail.com>",
+  "author": "Pushpak Chhajed <pushpak1300@gmail.com>",
   "license": "mit",
   "bugs": {
     "url": "https://github.com/pushpak1300/cypress-mailpit/issues"
