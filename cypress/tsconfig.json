@@ -7,10 +7,8 @@
     "allowSyntheticDefaultImports": true
   },
   "include": [
-    "index.ts",
-    "cypress.d.ts"
+    "../cypress.config.ts",
+    "**/*.ts",
+    "../cypress.d.ts"
   ],
-    "exclude": [
-      "node_modules",
-    ]
 }
