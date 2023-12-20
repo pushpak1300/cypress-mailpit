@@ -123,13 +123,22 @@ Cypress.Commands.add('mhGetMailsBySubject', (subject: string, limit = 50, option
 Cypress.Commands.add('mhGetMailsByRecipient', (recipient: string, limit = 50, options: RequestOptions = {}) => retryFetchMessages(mails => mails.filter(mail => mail.To.some(recipientObj => recipientObj.Address === recipient)), limit, options));
 Cypress.Commands.add('mhGetMailsBySender', (from: string, limit = 50, options: RequestOptions = {}) => retryFetchMessages(mails => mails.filter(mail => mail.From.Address === from), limit, options));
 Cypress.Commands.add('mhGetSubject', { prevSubject: true }, (mail: Message) => cy.wrap(mail).its('Subject'));
-Cypress.Commands.add('mhGetBody', { prevSubject: true }, (mail: Message) => {
+Cypress.Commands.add('mhGetBodyHTML', { prevSubject: true }, (mail: Message) => {
   const messageId: string =  mail.ID;
   fetchMessage(messageId)
   .then((response) => {
     return cy.wrap(response).its('HTML');
   });
 });
+
+Cypress.Commands.add('mhGetBody', { prevSubject: true }, (mail: Message) => {
+  const messageId: string =  mail.ID;
+  fetchMessage(messageId)
+  .then((response) => {
+    return cy.wrap(response).its('Text');
+  });
+});
+
 Cypress.Commands.add('mhGetSender', { prevSubject: true }, (mail: Message) => cy.wrap(mail.From).its('Address'));
 Cypress.Commands.add('mhGetRecipients', { prevSubject: true }, (mail: Message) => {
   const recipients: string[] = []
