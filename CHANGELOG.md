@@ -2,6 +2,13 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+### [0.0.4](https://github.com/pushpak1300/cypress-mailpit/compare/v0.0.3...v0.0.4) (2023-12-20)
+
+
+### Features
+
+* add mhGetBodyHTML function to get html ([8178940](https://github.com/pushpak1300/cypress-mailpit/commit/81789401c37af3203b2d6a93822389176afb18a9))
+
 ### [0.0.3](https://github.com/pushpak1300/cypress-mailpit/compare/v0.0.2...v0.0.3) (2023-12-19)
 
 
