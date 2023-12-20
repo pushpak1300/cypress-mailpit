@@ -157,7 +157,7 @@ describe("Mailpit Test", () => {
     cy.mhGetAllMails().should('have.length', 1).mhFirst().mhGetSubject().should('eq', 'Hello');
   });
 
-  it("returns the mail body", () => {
+  it("returns the html mail body", () => {
     cy.task("sendEmail", {
       from: `from@example.com`,
       to: `to$@example.com`,
@@ -167,7 +167,20 @@ describe("Mailpit Test", () => {
       htmlBody: "<h1>Hello</h1> <p>World</p>",
     });
     cy.wait(simulatedTransportDelay);
-    cy.mhGetAllMails().should('have.length', 1).mhFirst().mhGetBody().should('contain', '<h1>Hello</h1>');
+    cy.mhGetAllMails().should('have.length', 1).mhFirst().mhGetBodyHTML().should('contain', '<h1>Hello</h1>');
+  });
+
+  it("returns the text mail body", () => {
+    cy.task("sendEmail", {
+      from: `from@example.com`,
+      to: `to$@example.com`,
+      bcc: "bcc@example.com",
+      cc: "cc@example.com",
+      subject: 'Hello',
+      htmlBody: "<h1>Hello</h1> <p>World</p> <a href='http://localhost:8080'>Click</a>",
+    });
+    cy.wait(simulatedTransportDelay);
+    cy.mhGetAllMails().should('have.length', 1).mhFirst().mhGetBody().should('contain', 'http://localhost:8080');
   });
 
   it("returns the mail sender", () => {

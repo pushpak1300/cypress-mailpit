@@ -11,6 +11,7 @@ declare namespace Cypress {
     mhGetMailsByRecipient(recipient: string, limit?: number, options?: RequestOptions): Chainable<Array<Message>>;
     mhGetMailsBySender(from: string, limit?: number, options?: RequestOptions): Chainable<Array<Message>>;
     mhGetSubject(): Chainable<string>;
+    mhGetBodyHTML(): Chainable<string>;
     mhGetBody(): Chainable<string>;
     mhGetSender(): Chainable<string>;
     mhGetRecipients(): Chainable<Array<string>>;
