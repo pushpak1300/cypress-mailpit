@@ -28,7 +28,7 @@
   "devDependencies": {
     "@types/nodemailer": "^6.4.14",
     "cypress": "^13.6.1",
-    "eslint": "^4.19.1",
+    "eslint": "^9.4.0",
     "eslint-config-google": "^0.9.1",
     "prettier": "^1.11.1",
     "standard-version": "^9.5.0",
