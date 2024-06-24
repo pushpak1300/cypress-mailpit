@@ -1,15 +1,39 @@
 # cypress-mailpit
 
-A collection of useful Cypress commands for mailpit 🐗.
+This package provides a comprehensive set of Cypress commands designed specifically for interacting with [Mailpit](https://mailpit.axllent.org/), a popular mail testing tool.
+This package supports TypeScript out of the box.
 
-This package supports TypeScript out of the box. 
+### Features
+- [x] Get all mails from Mailpit
+- [x] Search mails from Mailpit
+- [x] Get mails by subject
+- [x] Get a single mail from Mailpit
+- [x] Send a mail from Mailpit
+- [x] Delete all mails from Mailpit
+- [x] Get the subject of a mail
+- [x] Get the body of a mail
+- [x] Get the sender of a mail
+- [x] Get the recipients of a mail
+- [x] Get the attachments of a mail
+- [x] Get the spam assassin summary of a mail
+- [x] TypeScript support
+- [x] Basic Auth support
+- [x] Custom Mailpit URL
+- [ ] Many more to come
 
 ### Setup
 
-Install this package via NPM:
+Install this package:
 
 ```bash
-npm install cypress-mailpit
+# npm
+npm install --save-dev cypress-mailpit
+
+# yarn
+yarn add --dev cypress-mailpit
+
+# pnpm
+pnpm add -D cypress-mailpit
 ```
 
 Include this package into your Cypress command file:
@@ -19,211 +43,211 @@ Include this package into your Cypress command file:
 import 'cypress-mailpit';
 ```
 
-###### Before cypress 10.0.0
-
-Add the base url of your mailpit installation to your `cypress.json`:
-
-```json
-{
-  ...
-  "mailpitUrl": "http://localhost:8090"
-}
-```
-
-###### After cypress 10.0.0
-
-Add the base url of your mailpit installation in the `e2e` block of your `cypress.config.ts` / `cypress.config.js`:
+Add the base URL of your Mailpit installation in the `e2e` block of your `cypress.config.ts` / `cypress.config.js`:
 
 ```typescript
 export default defineConfig({
-    projectId: "****",
-    env: { 
-        mailpitUrl: "http://localhost:8090/",
-    }
-})
+  projectId: "****",
+  env: {
+    MAILPIT_URL: "http://localhost:8025/",
+  },
+});
 ```
 
-If your mailpit instance uses authentication, add `mailpitAuth` to your cypress `env` config:
+### Mailpit authentication (Basic Auth)
+
+Add `MAILPIT_USERNAME` and `MAILPIT_PASSWORD` in Cypress env config:
 
 ```json
 {
-  ...
-  "mailpitAuth": {"user": "mailpit username", "pass": "mailpit password"}
-}
-```
-
-or add `mailpitUsername` and `mailpitPassword` in cypress env config
-
-```json
-{
-  ...
-  "mailpitUsername": "mailpit username",
-  "mailpitPassword": "mailpit password"
+  "MAILPIT_USERNAME": "mailpit username",
+  "MAILPIT_PASSWORD": "mailpit password"
 }
 ```
 
 ## Commands
-### Mail Collection
-#### mhGetAllMails( limit=50, options={timeout=defaultCommandTimeout} ) 
 
-Yields an array of all the mails stored in mailpit. This retries automatically until mails are found (or until timeout is reached). 
+
+#### mailpitGetAllMails(start = 0, limit = 50)
+
+Yields an array of all the mails stored in Mailpit starting from `start` index up to `limit`.
 
 ```JavaScript
-cy
-  .mhGetAllMails()
-  .should('have.length', 1);
+cy.mailpitGetAllMails().then((result) => {
+    expect(result).to.have.property('messages');
+    expect(result.messages).to.have.length(numberOfEmails);
+    expect(result.messages).to.be.an('array');
+    expect(result).to.have.property('tags');
+    expect(result).to.have.property('messages_count', numberOfEmails);
+    expect(result).to.have.property('start');
+    expect(result).to.have.property('total', numberOfEmails);
+    expect(result).to.have.property('count', numberOfEmails);
+    expect(result).to.have.property('unread');
+});
 ```
 
-#### mhGetMailsBySubject( subject, limit=50, options={timeout=defaultCommandTimeout} ) 
+#### mailpitSearchEmails(query, start = 0, limit = 50)
 
-Yields an array of all mails with given subject. This retries automatically until mails are found (or until timeout is reached).
+Searches all mails from Mailpit using the given query and yields an array of matching mails starting from `start` index up to `limit`.
+For more information about the query syntax, refer to the [Mailpit documentation](https://mailpit.axllent.org/docs/usage/search-filters/).
 
 ```JavaScript
-cy
-  .mhGetMailsBySubject('My Subject')
-  .should('have.length', 1);
+cy.mailpitSearchEmails('Test').then((result) => {
+    expect(result).to.have.property('messages');
+    expect(result.messages).to.have.length(numberOfEmails);
+    expect(result.messages).to.be.an('array');
+    expect(result.messages[0].Snippet).to.contain('Test');
+    expect(result.messages).to.have.length(numberOfEmails);
+    expect(result.messages).to.be.an('array');
+    expect(result).to.have.property('messages_count', numberOfEmails);
+    expect(result).to.have.property('total', 3);
+    expect(result).to.have.property('count', numberOfEmails);
+});
 ```
-#### mhGetMailsBySender( from, limit=50, options={timeout=defaultCommandTimeout} ) 
 
-Yields an array of all mails with given sender. This retries automatically until mails are found (or until timeout is reached).
+#### mailpitGetEmailsBySubject(subject, start = 0, limit = 50)
+
+Fetches all mails from Mailpit with the given subject starting from `start` index up to `limit`.
 
 ```JavaScript
-cy
-  .mhGetMailsBySender('sender@example.com')
-  .should('have.length', 1);
+cy.mailpitGetEmailsBySubject('My Test').then((result) => {
+    expect(result).to.have.property('messages');
+    expect(result.messages).to.have.length(numberOfEmails);
+    expect(result.messages).to.be.an('array');
+    expect(result).to.have.property('messages_count', numberOfEmails);
+    expect(result).to.have.property('total', 2 * numberOfEmails);
+    expect(result).to.have.property('count', numberOfEmails);
+});
 ```
-#### mhGetMailsByRecipient( recipient, limit=50 ) 
 
-Yields an array of all mails with given recipient.
+#### mailpitGetMail(id?)
+
+Yields the mail with the given ID. If no ID is provided, yields the latest email.
 
 ```JavaScript
-cy
-  .mhGetMailsByRecipient('recipient@example.com')
-  .should('have.length', 1);
+cy.mailpitGetMail().then((result) => {
+    expect(result).to.have.property('ID');
+    expect(result).to.have.property('MessageID');
+    expect(result).to.have.property('From');
+    expect(result).to.have.property('To');
+    expect(result).to.have.property('Subject');
+});
 ```
-#### mhFirst()
 
-Yields the first mail of the loaded selection.
+#### mailpitSendMail(options?)
+
+Sends an email with the given options. If no options are provided, sends a default email.
 
 ```JavaScript
 cy
-  .mhGetAllMails()
-  .should('have.length', 1)
-  .mhFirst();
-``` 
-#### mhDeleteAll()
+  .mailpitSendMail({ to: 'recipient@example.com', subject: 'Hello', text: 'Test message' })
+  .should('have.property', 'ID');
+```
 
-Deletes all stored mails from mailpit.
+#### mailpitDeleteAllEmails()
+
+Deletes all stored mails from Mailpit.
 
 ```JavaScript
-cy.mhDeleteAll();
-``` 
+cy.mailpitDeleteAllEmails();
+```
 
+### Handling a Single Mail
 
-### Handling a Single Mail ✉️
-#### mhGetSubject()
+#### mailpitGetMailTextBody(message?)
+
+Yields the text body of the current mail.
+
+```JavaScript
+cy
+  .mailpitGetMail()
+  .mailpitGetMailTextBody()
+  .should('contain', 'Message Body');
+```
+
+#### mailpitGetMailHTMlBody(message?)
+
+Yields the HTML body of the current mail.
+
+```JavaScript
+cy
+  .mailpitGetMail()
+  .mailpitGetMailHTMlBody()
+  .should('contain', '<p>Message Body</p>');
+```
+
+#### mailpitGetFromAddress(message?)
+
+Yields the sender address of the current mail.
+
+```JavaScript
+cy
+  .mailpitGetMail()
+  .mailpitGetFromAddress()
+  .should('eq', 'sender@example.com');
+```
+
+#### mailpitGetRecipientAddress(message?)
+
+Yields the recipient addresses of the current mail.
+
+```JavaScript
+cy
+  .mailpitGetMail()
+  .mailpitGetRecipientAddress()
+  .should('contain', 'recipient@example.com');
+```
+
+#### mailpitGetSubject(message?)
 
 Yields the subject of the current mail.
 
 ```JavaScript
 cy
-  .mhGetAllMails()
-  .should('have.length', 1)  
-  .mhFirst()
-  .mhGetSubject()
-  .should('eq', 'My Mails Subject');
-``` 
-#### mhGetBody()
+  .mailpitGetMail()
+  .mailpitGetSubject()
+  .should('eq', 'My Subject');
+```
 
-Yields the body of the current mail.
+#### mailpitGetAttachments(message?)
 
-```JavaScript
-cy
-  .mhGetAllMails()
-  .should('have.length', 1)
-  .mhFirst()
-  .mhGetBody()
-  .should('contain', 'Part of the Message Body');
-``` 
-#### mhGetSender()
-
-Yields the sender of the current mail.
+Yields the list of all filenames of the attachments of the current mail.
 
 ```JavaScript
 cy
-  .mhGetAllMails()
-  .should('have.length', 1)
-  .mhFirst()
-  .mhGetSender()
-  .should('eq', 'sender@example.com');
-``` 
-#### mhGetRecipients()
+  .mailpitGetMail()
+  .mailpitGetAttachments()
+  .should('have.length', 2)
+  .should('include', 'sample.pdf');
+```
 
-Yields the recipient of the current mail.
+#### mailpitGetMailSpamAssainSummary(message?)
+
+Yields the SpamAssassin summary of the current mail.
 
 ```JavaScript
 cy
-  .mhGetAllMails()
-  .should('have.length', 1)
-  .mhFirst()
-  .mhGetRecipients()
-  .should('contain', 'recipient@example.com');
-``` 
-
-
-### Asserting the Mail Collection 🔍
-
-#### mhHasMailWithSubject( subject )
-
-Asserts if there is a mail with given subject.
-
-```JavaScript
-cy.mhHasMailWithSubject('My Subject');
-``` 
-#### mhHasMailFrom( from )
-
-Asserts if there is a mail from given sender.
-
-```JavaScript
-cy.mhHasMailFrom('sender@example.com');
-``` 
-#### mhHasMailTo( recipient )
-
-Asserts if there is a mail to given recipient (looks for "To", "CC" and "BCC").
-
-```JavaScript
-cy.mhHasMailTo('recipient@example.com');
-``` 
+  .mailpitGetMail()
+  .mailpitGetMailSpamAssainSummary()
+  .should('have.property', 'score');
+```
 
 ## Package Development
 
-### Start Local Test Server
-
-Navigate into the `test-server` directory.
-
-```bash
-cd ./test-server/
-```
+Make sure the mailpit server is running. and set the env in `cypress.config.ts`
 
 Install dependencies.
 
 ```bash
-composer install
-yarn # or npm install
+npm install
 ```
 
-Start docker server.
-
+Build the package
 ```bash
-docker-compose up
+npm run build
 ```
 
-Open the test page in your browser: [http://localhost:3000/cypress-mh-tests/](http://localhost:3000/cypress-mh-tests/)
-
-Open mailpit in your browser: [http://localhost:8090/](http://localhost:8090/)
-
-Open the Cypress testclient.
-
+Run cypress tests
 ```bash
-yarn cypress:open
+npm run cy:run
 ```

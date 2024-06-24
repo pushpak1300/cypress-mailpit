@@ -1,9 +1,15 @@
 import { defineConfig } from "cypress";
+
+// noinspection JSUnusedGlobalSymbols
 export default defineConfig({
-  e2e: {
-    setupNodeEvents(on, config) {
-      return require('./cypress/plugins/index.ts')(on, config)
-    },
-    mailpitUrl: "http://localhost:8025",
-  },
+	video: false,
+	e2e: {
+		setupNodeEvents(_on, _config) {},
+	},
+	env: {
+		BASE_URL: "http://localhost:8025",
+		MAILPIT_URL: "http://localhost:8025",
+		MAILPIT_USERNAME: "admin",
+		MAILPIT_PASSWORD: "admin",
+	},
 });

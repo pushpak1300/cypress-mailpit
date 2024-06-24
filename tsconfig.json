@@ -1,5 +1,6 @@
 {
   "compilerOptions": {
+    "baseUrl": ".",
     "target": "es5",
     "lib": ["es5", "dom"],
     "types": ["cypress","node"],
@@ -10,7 +11,7 @@
     "index.ts",
     "cypress.d.ts"
   ],
-    "exclude": [
-      "node_modules",
-    ]
+  "exclude": [
+    "node_modules"
+  ]
 }
