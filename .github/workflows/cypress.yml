@@ -5,11 +5,23 @@ on: [push]
 jobs:
   cypress-tests:
     runs-on: ubuntu-latest
+    services:
+      mailpit:
+        image: axllent/mailpit
+        ports:
+          - 8025:8025
+          - 1025:1025
     steps:
     - uses: actions/checkout@v1
     - name: Install Dependencies
       run: |
         npm install
+    - name: Lint App
+      run: |
+        npm run check
+    - name: Build App
+      run: |
+        npm run build
     - name: Run Cypress Tests
       run: |
         npm run cy:run
