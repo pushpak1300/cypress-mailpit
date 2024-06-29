@@ -1,39 +1,44 @@
 {
   "name": "cypress-mailpit",
-  "version": "0.0.4",
-  "description": "Cypress Commands for mailpit 🌳🐗",
-  "main": "index.js",
+  "version": "1.0.0",
+  "description": "Cypress Commands for Mailpit 💌",
+  "main": "rewrite/index.js",
   "types": "cypress.d.ts",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
     "release": "standard-version",
-    "cy:run": "cypress run --headless"
+    "check": "biome check",
+    "format": "biome format",
+    "lint": "biome lint",
+    "fix": "biome check --write",
+    "build": "tsc index.ts",
+    "cy:run": "cypress run --headless",
+    "cy:open": "cypress open -b electron"
   },
   "repository": {
     "type": "git",
     "url": "git+https://github.com/pushpak1300/cypress-mailpit"
   },
   "keywords": [
-    "JavaScript",
-    "Testing",
-    "Cypress.io",
-    "mailpit"
+    "cypress",
+    "mailpit",
+    "testing",
+    "email",
+    "javascript",
+    "typescript"
   ],
-  "author": "Pushpak Chhajed <pushpak1300@gmail.com>",
-  "license": "mit",
+  "author": "pushpak1300@gmail.com",
+  "license": "MIT",
   "bugs": {
     "url": "https://github.com/pushpak1300/cypress-mailpit/issues"
   },
   "homepage": "https://github.com/pushpak1300/cypress-mailpit#readme",
+  "dependencies": {
+    "@types/cypress": "^1.1.3",
+    "cypress": "^13.12.0",
+    "typescript": "^5.5.2"
+  },
   "devDependencies": {
-    "@types/nodemailer": "^6.4.14",
-    "cypress": "^13.6.1",
-    "eslint": "^4.19.1",
-    "eslint-config-google": "^0.9.1",
-    "prettier": "^1.11.1",
-    "standard-version": "^9.5.0",
-    "typescript": "^4.9.5",
-    "dotenv": "^16.3.1",
-    "nodemailer": "^6.9.7"
+    "@biomejs/biome": "1.8.2"
   }
 }
