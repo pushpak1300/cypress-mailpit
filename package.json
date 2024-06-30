@@ -13,7 +13,7 @@
     "fix": "biome check --write",
     "build": "tsc index.ts",
     "cy:run": "cypress run --headless",
-    "cy:open": "cypress open -b electron"
+    "cy:dev": "cypress open -b electron"
   },
   "repository": {
     "type": "git",
