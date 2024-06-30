@@ -2,6 +2,30 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+## [1.0.0](https://github.com/pushpak1300/cypress-mailpit/compare/v0.0.4...v1.0.0) (2024-06-30)
+
+
+### ⚠ BREAKING CHANGES
+
+* rewrite in typescript with new assertions
+
+### Features
+
+* add mhGetBodyHTML function to get html ([62c8293](https://github.com/pushpak1300/cypress-mailpit/commit/62c82939daa4086052ef9b1e8a7bb47cdfbaa359))
+* add npm instead of yarn and remove duplicate docker file ([beda66f](https://github.com/pushpak1300/cypress-mailpit/commit/beda66fd5e081ffd70101a63e2a07e262a70e796))
+* add typescript ([7b1dc5b](https://github.com/pushpak1300/cypress-mailpit/commit/7b1dc5badaf7284ae4600b23eb82adfb5a8b0573))
+* **ci:** adds release-please.yml to automate release process ([87285b0](https://github.com/pushpak1300/cypress-mailpit/commit/87285b0621e673f031f3f016e31ecfff911d7bac))
+* refactor to typescript ([bac8e0f](https://github.com/pushpak1300/cypress-mailpit/commit/bac8e0f3d2b6787d9bf5a173752c999add94bf85))
+* rewrite in typescript with new assertions ([36ea2af](https://github.com/pushpak1300/cypress-mailpit/commit/36ea2affc064eda09f5a378cfff19d9f72f94ecd))
+
+
+### Bug Fixes
+
+* issue with component in tag ([e6735fb](https://github.com/pushpak1300/cypress-mailpit/commit/e6735fbf93b5d278eacbe31fc4dbaf91763e55f1))
+* issue with release package ([db9aec9](https://github.com/pushpak1300/cypress-mailpit/commit/db9aec92c8b41565d531cf444bb1e86925244b75))
+* issue with release-please ([90b7a27](https://github.com/pushpak1300/cypress-mailpit/commit/90b7a27bd8428c760586dcb3d6ddb317c1eaa620))
+* make package dev dependencies ([00a1936](https://github.com/pushpak1300/cypress-mailpit/commit/00a1936ecdb2198121d0cf1302e169549559758e))
+
 ## [1.2.1](https://github.com/pushpak1300/cypress-mailpit/compare/v1.2.0...v1.2.1) (2024-06-30)
 
 
