@@ -2,6 +2,13 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+## [1.1.0](https://github.com/pushpak1300/cypress-mailpit/compare/v1.0.0...v1.1.0) (2024-06-30)
+
+
+### Features
+
+* **ci:** add a workflow to release npm package on every release ([dc2d13b](https://github.com/pushpak1300/cypress-mailpit/commit/dc2d13bf5242357594ea26235b4f048c281e32d4))
+
 ## 1.0.0 (2024-06-30)
 
 
