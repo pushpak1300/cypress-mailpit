@@ -1,4 +1,4 @@
-name: Cypress
+name: Cypress Test
 
 on: [push]
 
@@ -11,17 +11,15 @@ jobs:
         ports:
           - 8025:8025
           - 1025:1025
+    strategy:
+      fail-fast: false # https://github.com/cypress-io/github-action/issues/48
+      matrix:
+        containers: [ 1 ]
     steps:
-    - uses: actions/checkout@v1
-    - name: Install Dependencies
-      run: |
-        npm install
-    - name: Lint App
-      run: |
-        npm run check
-    - name: Build App
-      run: |
-        npm run build
-    - name: Run Cypress Tests
-      run: |
-        npm run cy:run
+    - uses: actions/checkout@v4
+    - name: Cypress run
+      uses: cypress-io/github-action@v6
+      with:
+        build: npm run build
+        wait-on: 'http://localhost:8025'
+        record: false
