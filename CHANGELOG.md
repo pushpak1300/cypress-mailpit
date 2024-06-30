@@ -2,6 +2,45 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+## [1.2.1](https://github.com/pushpak1300/cypress-mailpit/compare/v1.2.0...v1.2.1) (2024-06-30)
+
+
+### Bug Fixes
+
+* **ci:** issue with release workflow ([#17](https://github.com/pushpak1300/cypress-mailpit/issues/17)) ([2cf4b6a](https://github.com/pushpak1300/cypress-mailpit/commit/2cf4b6a7eaa9df4d49cba5aa4c21a50f302158de))
+
+## [1.2.0](https://github.com/pushpak1300/cypress-mailpit/compare/v1.1.0...v1.2.0) (2024-06-30)
+
+
+### Features
+
+* add mhGetBodyHTML function to get html ([62c8293](https://github.com/pushpak1300/cypress-mailpit/commit/62c82939daa4086052ef9b1e8a7bb47cdfbaa359))
+* add npm instead of yarn and remove duplicate docker file ([beda66f](https://github.com/pushpak1300/cypress-mailpit/commit/beda66fd5e081ffd70101a63e2a07e262a70e796))
+* add typescript ([7b1dc5b](https://github.com/pushpak1300/cypress-mailpit/commit/7b1dc5badaf7284ae4600b23eb82adfb5a8b0573))
+* **ci:** add a workflow to release npm package on every release ([ab28481](https://github.com/pushpak1300/cypress-mailpit/commit/ab284818aa514162422491bbd38d1baad98b7174))
+* **ci:** adds release-please.yml to automate release process ([b584474](https://github.com/pushpak1300/cypress-mailpit/commit/b58447418f1f7a26ffce6430456b33212e168b27))
+* refactor to typescript ([bac8e0f](https://github.com/pushpak1300/cypress-mailpit/commit/bac8e0f3d2b6787d9bf5a173752c999add94bf85))
+* rewrite in typescript with new assertions ([3c2eb2c](https://github.com/pushpak1300/cypress-mailpit/commit/3c2eb2c3346e7f6a52cbe8dcb3cb57dc0c7c41fd))
+
+## [1.1.0](https://github.com/pushpak1300/cypress-mailpit/compare/v1.0.0...v1.1.0) (2024-06-30)
+
+
+### Features
+
+* **ci:** add a workflow to release npm package on every release ([ab28481](https://github.com/pushpak1300/cypress-mailpit/commit/ab284818aa514162422491bbd38d1baad98b7174))
+
+## 1.0.0 (2024-06-30)
+
+
+### Features
+
+* add mhGetBodyHTML function to get html ([62c8293](https://github.com/pushpak1300/cypress-mailpit/commit/62c82939daa4086052ef9b1e8a7bb47cdfbaa359))
+* add npm instead of yarn and remove duplicate docker file ([beda66f](https://github.com/pushpak1300/cypress-mailpit/commit/beda66fd5e081ffd70101a63e2a07e262a70e796))
+* add typescript ([7b1dc5b](https://github.com/pushpak1300/cypress-mailpit/commit/7b1dc5badaf7284ae4600b23eb82adfb5a8b0573))
+* **ci:** adds release-please.yml to automate release process ([b584474](https://github.com/pushpak1300/cypress-mailpit/commit/b58447418f1f7a26ffce6430456b33212e168b27))
+* refactor to typescript ([bac8e0f](https://github.com/pushpak1300/cypress-mailpit/commit/bac8e0f3d2b6787d9bf5a173752c999add94bf85))
+* rewrite in typescript with new assertions ([3c2eb2c](https://github.com/pushpak1300/cypress-mailpit/commit/3c2eb2c3346e7f6a52cbe8dcb3cb57dc0c7c41fd))
+
 ### [0.0.4](https://github.com/pushpak1300/cypress-mailpit/compare/v0.0.3...v0.0.4) (2023-12-20)
 
 
