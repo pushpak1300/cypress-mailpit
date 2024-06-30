@@ -1,4 +1,9 @@
-# cypress-mailpit
+# Cypress Mailpit
+
+[![npm version](https://badge.fury.io/js/cypress-mailpit.svg)](https://badge.fury.io/js/cypress-mailpit)
+[![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](https://opensource.org/licenses/MIT)
+
+![cypress-mailpit-og-image](/og-image.png)
 
 This package provides a comprehensive set of Cypress commands designed specifically for interacting with [Mailpit](https://mailpit.axllent.org/), a popular mail testing tool.
 This package supports TypeScript out of the box.
