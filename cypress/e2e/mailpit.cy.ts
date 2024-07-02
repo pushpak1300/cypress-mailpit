@@ -144,4 +144,40 @@ describe("mailpit query test", () => {
 			expect(result).to.have.property("count", numberOfEmails);
 		});
 	});
+
+	it("can get all the emails by to", () => {
+		const numberOfEmails = 5;
+		for (let i = 1; i <= numberOfEmails; i++) {
+			cy.mailpitSendMail({
+				to: [{ Email: `test@example.com`, Name: `To` }],
+			});
+		}
+		for (let i = 1; i <= numberOfEmails; i++) {
+			cy.mailpitSendMail();
+		}
+		cy.mailpitGetEmailsByTo("test@example.com").then((result) => {
+			expect(result).to.have.property("messages_count", numberOfEmails);
+			expect(result).to.have.property("total", 2 * numberOfEmails);
+			expect(result).to.have.property("count", numberOfEmails);
+			expect(result).to.have.property("messages");
+			expect(result.messages).to.have.length(numberOfEmails);
+			expect(result.messages).to.be.an("array");
+		});
+	});
+
+	it("can assert mailpit has emails by subject or not", () => {
+		cy.mailpitSendMail({
+			subject: "My Test",
+		});
+		cy.mailpitHasEmailsBySubject("My Test");
+		cy.mailpitNotHasEmailsBySubject("Not");
+	});
+
+	it("can assert mailpit has emails by to or not", () => {
+		cy.mailpitSendMail({
+			to: [{ Email: "to@example.com", Name: "To" }],
+		});
+		cy.mailpitHasEmailsByTo("to@example.com");
+		cy.mailpitNotHasEmailsByTo("invalid@example.com");
+	});
 });

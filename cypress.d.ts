@@ -28,6 +28,46 @@ declare global {
 			mailpitGetEmailsBySubject(subject: string, start?: number, limit?: number): Chainable<MessagesSummary>;
 
 			/**
+			 * Check is mails has email using subject.
+			 * @param subject
+			 * @param start
+			 * @param limit
+			 */
+			mailpitHasEmailsBySubject(subject: string, start?: number, limit?: number): Chainable;
+
+			/**
+			 * Check is mails has not any emails using subject.
+			 * @param subject
+			 * @param start
+			 * @param limit
+			 */
+			mailpitNotHasEmailsBySubject(subject: string, start?: number, limit?: number): Chainable;
+
+			/**
+			 * Get all mails from the mailbox using To.
+			 * @param email
+			 * @param start
+			 * @param limit
+			 */
+			mailpitGetEmailsByTo(email: string, start?: number, limit?: number): Chainable<MessagesSummary>;
+
+			/**
+			 * Check is mails has email using To.
+			 * @param email
+			 * @param start
+			 * @param limit
+			 */
+			mailpitHasEmailsByTo(email: string, start?: number, limit?: number): Chainable;
+
+			/**
+			 * Check is mails not has email using To.
+			 * @param email
+			 * @param start
+			 * @param limit
+			 */
+			mailpitNotHasEmailsByTo(email: string, start?: number, limit?: number): Chainable;
+
+			/**
 			 * Get the mail text body.
 			 * @param message
 			 */
@@ -55,6 +95,7 @@ declare global {
 			 *
 			 */
 			mailpitGetMailSpamAssainSummary(message?: Message): Chainable<SpamAssassin>;
+
 			/**
 			 * Get the mail recipient address.
 			 * @param message

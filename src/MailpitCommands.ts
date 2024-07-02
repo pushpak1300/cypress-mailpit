@@ -12,6 +12,11 @@ class MailpitCommands {
 			"mailpitGetMail",
 			"mailpitSearchEmails",
 			"mailpitSendMail",
+			"mailpitHasEmailsBySubject",
+			"mailpitGetEmailsByTo",
+			"mailpitHasEmailsByTo",
+			"mailpitNotHasEmailsBySubject",
+			"mailpitNotHasEmailsByTo",
 		];
 	}
 
@@ -124,6 +129,30 @@ class MailpitCommands {
 
 	mailpitGetEmailsBySubject(subject: string, start = 0, limit = 50): Cypress.Chainable<MessagesSummary> {
 		return this.mailpitSearchEmails(`subject:${subject}`, start, limit);
+	}
+
+	mailpitHasEmailsBySubject(subject: string, start = 0, limit = 50): Cypress.Chainable {
+		return this.mailpitGetEmailsBySubject(subject, start, limit)
+			.should("have.property", "messages_count")
+			.should("be.gt", 0);
+	}
+
+	mailpitNotHasEmailsBySubject(subject: string, start = 0, limit = 50): Cypress.Chainable {
+		return this.mailpitGetEmailsBySubject(subject, start, limit)
+			.should("have.property", "messages_count")
+			.should("equal", 0);
+	}
+
+	mailpitGetEmailsByTo(email: string, start = 0, limit = 50): Cypress.Chainable<MessagesSummary> {
+		return this.mailpitSearchEmails(`to:${email}`, start, limit);
+	}
+
+	mailpitHasEmailsByTo(email: string, start = 0, limit = 50): Cypress.Chainable {
+		return this.mailpitGetEmailsByTo(email, start, limit).should("have.property", "messages_count").should("be.gt", 0);
+	}
+
+	mailpitNotHasEmailsByTo(email: string, start = 0, limit = 50): Cypress.Chainable {
+		return this.mailpitGetEmailsByTo(email, start, limit).should("have.property", "messages_count").should("equal", 0);
 	}
 
 	mailpitDeleteAllEmails(): Cypress.Chainable<Cypress.Response<void>> {
