@@ -2,6 +2,14 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+## [1.1.0](https://github.com/pushpak1300/cypress-mailpit/compare/v1.0.1...v1.1.0) (2024-07-02)
+
+
+### Features
+
+* add commands to support the new assertions ([3ac6ef0](https://github.com/pushpak1300/cypress-mailpit/commit/3ac6ef047af4dba31822dadea4398dd1e4ec2253))
+* **docs:** add a documentation for new commands ([73a425e](https://github.com/pushpak1300/cypress-mailpit/commit/73a425e0fedafd6fd34eeda3c5da96899d0de61e))
+
 ## [1.0.1](https://github.com/pushpak1300/cypress-mailpit/compare/v1.0.0...v1.0.1) (2024-06-30)
 
 
