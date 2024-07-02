@@ -149,6 +149,51 @@ cy
   .should('have.property', 'ID');
 ```
 
+#### mailpitHasEmailsBySubject(subject, start = 0, limit = 50)
+
+Checks if there are any emails in Mailpit with the given subject. Yields a boolean value.
+
+```JavaScript
+cy.mailpitHasEmailsBySubject('My Test').should('be.true');
+```
+
+
+#### mailpitGetEmailsByTo(email, start = 0, limit = 50)
+
+Fetches all emails from Mailpit sent to the given email address. Yields an array of matching emails.
+```JavaScript
+
+cy.mailpitGetEmailsBySubject('recipient@example.com').then((result) => {
+    expect(result).to.have.property('messages');
+    expect(result.messages).to.have.length(numberOfEmails);
+    expect(result.messages).to.be.an('array');
+    expect(result).to.have.property('messages_count', numberOfEmails);
+    expect(result).to.have.property('total', 2 * numberOfEmails);
+    expect(result).to.have.property('count', numberOfEmails);
+});
+```
+
+### mailpitHasEmailsByTo(email, start = 0, limit = 50)
+Checks if there are any emails in Mailpit sent to the given email address. Yields a boolean value.
+
+```JavaScript
+cy.mailpitHasEmailsByTo('recipient@example.com');
+```
+
+### mailpitNotHasEmailsBySubject(subject, start = 0, limit = 50)
+Checks if there are emails in Mailpit with the given subject. Yields a boolean value.
+```JavaScript
+cy.mailpitNotHasEmailsBySubject('My Test').should('be.true');
+```
+
+
+### mailpitNotHasEmailsByTo(email, start = 0, limit = 50)
+Checks if there are any emails in Mailpit sent to the given email address. Yields a boolean value.
+```JavaScript
+cy.mailpitNotHasEmailsByTo('recipient@example.com');
+```
+
+
 #### mailpitDeleteAllEmails()
 
 Deletes all stored mails from Mailpit.
@@ -156,6 +201,7 @@ Deletes all stored mails from Mailpit.
 ```JavaScript
 cy.mailpitDeleteAllEmails();
 ```
+
 
 ### Handling a Single Mail
 
