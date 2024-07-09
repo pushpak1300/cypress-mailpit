@@ -28,7 +28,8 @@ class MailpitCommands {
 			"mailpitGetRecipientAddress",
 			"mailpitGetSubject",
 			"mailpitGetAttachments",
-			"mailpitGetMailSpamAssainSummary",
+			"mailpitGetMailSpamAssassinSummary",
+			"mailpitGetMailSpamAssainSummary", // deprecated only for backward compatibility
 		];
 	}
 
@@ -176,7 +177,7 @@ class MailpitCommands {
 		return cy.wrap(message.Attachments.map((attachment) => attachment.FileName));
 	}
 
-	mailpitGetMailSpamAssainSummary(message: Message): Cypress.Chainable<SpamAssassin> {
+	mailpitGetMailSpamAssassinSummary(message: Message): Cypress.Chainable<SpamAssassin> {
 		const messageId = message.ID;
 		return cy
 			.request({
@@ -190,6 +191,16 @@ class MailpitCommands {
 				}
 				return response.body as SpamAssassin;
 			});
+	}
+
+	/**
+	 * Get the mail spam assassin summary.
+	 * This is a deprecated method.
+	 * Only for backward compatibility.
+	 * @param message
+	 */
+	mailpitGetMailSpamAssainSummary(message: Message): Cypress.Chainable<SpamAssassin> {
+		return this.mailpitGetMailSpamAssassinSummary(message);
 	}
 
 	mailpitGetMailHTMlBody(message: Message): Cypress.Chainable<string> {

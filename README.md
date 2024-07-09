@@ -272,7 +272,7 @@ cy
   .should('include', 'sample.pdf');
 ```
 
-#### mailpitGetMailSpamAssainSummary(message?)
+#### mailpitGetMailSpamAssassinSummary(message?)
 
 Yields the SpamAssassin summary of the current mail.
 
