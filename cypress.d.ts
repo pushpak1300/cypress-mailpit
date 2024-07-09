@@ -92,9 +92,17 @@ declare global {
 			mailpitGetAttachments(message?: Message): Chainable<string>;
 
 			/**
-			 *
+			 * Get the mail spam assassin summary.
+			 * @param message
 			 */
 			mailpitGetMailSpamAssassinSummary(message?: Message): Chainable<SpamAssassin>;
+
+			/**
+			 * Get the mail spam assassin summary. this is a deprecated method. Only for backward compatibility.
+			 * @param message
+			 * @deprecated Use mailpitGetMailSpamAssainSummary instead.
+			 */
+			mailpitGetMailSpamAssainSummary(message?: Message): Chainable<SpamAssassin>;
 
 			/**
 			 * Get the mail recipient address.
