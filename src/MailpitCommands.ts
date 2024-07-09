@@ -28,7 +28,7 @@ class MailpitCommands {
 			"mailpitGetRecipientAddress",
 			"mailpitGetSubject",
 			"mailpitGetAttachments",
-			"mailpitGetMailSpamAssainSummary",
+			"mailpitGetMailSpamAssassinSummary",
 		];
 	}
 
@@ -176,7 +176,7 @@ class MailpitCommands {
 		return cy.wrap(message.Attachments.map((attachment) => attachment.FileName));
 	}
 
-	mailpitGetMailSpamAssainSummary(message: Message): Cypress.Chainable<SpamAssassin> {
+	mailpitGetMailSpamAssassinSummary(message: Message): Cypress.Chainable<SpamAssassin> {
 		const messageId = message.ID;
 		return cy
 			.request({
