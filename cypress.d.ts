@@ -94,7 +94,7 @@ declare global {
 			/**
 			 *
 			 */
-			mailpitGetMailSpamAssainSummary(message?: Message): Chainable<SpamAssassin>;
+			mailpitGetMailSpamAssassinSummary(message?: Message): Chainable<SpamAssassin>;
 
 			/**
 			 * Get the mail recipient address.
