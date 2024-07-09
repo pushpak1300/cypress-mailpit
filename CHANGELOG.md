@@ -2,6 +2,13 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+## [1.1.1](https://github.com/pushpak1300/cypress-mailpit/compare/v1.1.0...v1.1.1) (2024-07-09)
+
+
+### Bug Fixes
+
+* misspelling of spam assassin method/types ([#31](https://github.com/pushpak1300/cypress-mailpit/issues/31)) ([39f7ca4](https://github.com/pushpak1300/cypress-mailpit/commit/39f7ca48582c3469793f16bd7b9e5dd83617e26e))
+
 ## [1.1.0](https://github.com/pushpak1300/cypress-mailpit/compare/v1.0.1...v1.1.0) (2024-07-02)
 
 
