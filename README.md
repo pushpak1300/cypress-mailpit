@@ -292,7 +292,7 @@ cy
 Sets the status of all emails in Mailpit to 'read'.
 
 ```JavaScript
-cy.mailpitSetAllEmailStatusAsRead().should('eq', 'OK');
+cy.mailpitSetAllEmailStatusAsRead();
 ```
 
 #### mailpitSetAllEmailStatusAsUnRead()
@@ -300,7 +300,7 @@ cy.mailpitSetAllEmailStatusAsRead().should('eq', 'OK');
 Sets the status of all emails in Mailpit to 'unread'.
 
 ```JavaScript
-cy.mailpitSetAllEmailStatusAsUnRead().should('eq', 'OK');
+cy.mailpitSetAllEmailStatusAsUnRead();
 ```
 
 #### mailpitSetStatusAsRead(messages)
@@ -309,7 +309,6 @@ Sets the status of specified email(s) to 'read'. Can accept a single message or 
 
 ```JavaScript
 cy.mailpitGetMail().mailpitSetStatusAsRead();
-});
 ```
 
 #### mailpitSetStatusAsUnRead(messages)
@@ -317,7 +316,7 @@ cy.mailpitGetMail().mailpitSetStatusAsRead();
 Sets the status of specified email(s) to 'unread'. Can accept a single message or an array of messages.
 
 ```JavaScript
-cy.mailpitGetMail().cy.mailpitSetStatusAsUnRead(message);
+cy.mailpitGetMail().mailpitSetStatusAsUnRead();
 ```
 
 ## Package Development
