@@ -24,6 +24,10 @@ This package supports TypeScript out of the box.
 - [x] TypeScript support
 - [x] Basic Auth support
 - [x] Custom Mailpit URL
+- [x] Set all emails as read
+- [x] Set all emails as unread
+- [x] Set specific email status as read
+- [x] Set specific email status as unread
 - [ ] Many more to come
 
 ### Setup
@@ -281,6 +285,39 @@ cy
   .mailpitGetMail()
   .mailpitGetMailSpamAssainSummary()
   .should('have.property', 'score');
+```
+
+#### mailpitSetAllEmailStatusAsRead()
+
+Sets the status of all emails in Mailpit to 'read'.
+
+```JavaScript
+cy.mailpitSetAllEmailStatusAsRead().should('eq', 'OK');
+```
+
+#### mailpitSetAllEmailStatusAsUnRead()
+
+Sets the status of all emails in Mailpit to 'unread'.
+
+```JavaScript
+cy.mailpitSetAllEmailStatusAsUnRead().should('eq', 'OK');
+```
+
+#### mailpitSetStatusAsRead(messages)
+
+Sets the status of specified email(s) to 'read'. Can accept a single message or an array of messages.
+
+```JavaScript
+cy.mailpitGetMail().mailpitSetStatusAsRead();
+});
+```
+
+#### mailpitSetStatusAsUnRead(messages)
+
+Sets the status of specified email(s) to 'unread'. Can accept a single message or an array of messages.
+
+```JavaScript
+cy.mailpitGetMail().cy.mailpitSetStatusAsUnRead(message);
 ```
 
 ## Package Development

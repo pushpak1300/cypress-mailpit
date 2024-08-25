@@ -181,3 +181,79 @@ describe("mailpit query test", () => {
 		cy.mailpitNotHasEmailsByTo("invalid@example.com");
 	});
 });
+
+describe("mailpit read status test", () => {
+	beforeEach(() => {
+		cy.mailpitDeleteAllEmails();
+	});
+
+	afterEach(() => {
+		cy.mailpitDeleteAllEmails();
+	});
+
+	it("can set email status as read", () => {
+		cy.mailpitSendMail();
+		cy.mailpitSendMail({
+			htmlBody: "<p>Test</p>",
+			textBody: "Test",
+		});
+		cy.mailpitSearchEmails("Test").then((result) => {
+			expect(result.messages[0].Read).to.false;
+		});
+
+		cy.mailpitGetMail().mailpitSetStatusAsRead();
+
+		cy.mailpitSearchEmails("Test").then((result) => {
+			expect(result.messages[0].Read).to.true;
+		});
+	});
+
+	it("can set email status as unread", () => {
+		cy.mailpitSendMail();
+		cy.mailpitSendMail({
+			htmlBody: "<p>Test</p>",
+			textBody: "Test",
+		});
+		cy.mailpitGetMail().mailpitSetStatusAsRead();
+		cy.mailpitSearchEmails("Test").then((result) => {
+			expect(result.messages[0].Read).to.true;
+		});
+		cy.mailpitGetMail().mailpitSetStatusAsUnRead();
+		cy.mailpitSearchEmails("Test").then((result) => {
+			expect(result.messages[0].Read).to.false;
+		});
+	});
+
+	it("can set multiple email statuses", () => {
+		const EmailsToSend = 3;
+		for (let index = 0; index < EmailsToSend; index++) {
+			cy.mailpitSendMail({ subject: `Test ${index}` });
+		}
+
+		// Verify all emails are now read
+		for (let index = 0; index < EmailsToSend; index++) {
+			cy.mailpitSearchEmails(`Test ${index}`).then((result) => {
+				expect(result.messages[0].Read).to.false;
+			});
+		}
+
+		cy.mailpitSetAllEmailStatusAsRead();
+
+		// Verify all emails are now read
+		for (let index = 0; index < EmailsToSend; index++) {
+			cy.mailpitSearchEmails(`Test ${index}`).then((result) => {
+				expect(result.messages[0].Read).to.true;
+			});
+		}
+
+		// Set all emails as unread
+		cy.mailpitSetAllEmailStatusAsUnRead();
+
+		// Verify all emails are now unread
+		for (let index = 0; index < EmailsToSend; index++) {
+			cy.mailpitSearchEmails(`Test ${index}`).then((result) => {
+				expect(result.messages[0].Read).to.false;
+			});
+		}
+	});
+});

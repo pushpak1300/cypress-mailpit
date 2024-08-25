@@ -1,4 +1,4 @@
-import type { Message, MessagesSummary, SendEmailOptions, SpamAssassin } from "./src/types";
+import type { Message, MessageSummary, MessagesSummary, SendEmailOptions, SpamAssassin } from "./src/types";
 
 /// <reference types="cypress" />
 declare global {
@@ -136,6 +136,32 @@ declare global {
 			 * Delete all emails from the mailbox.
 			 */
 			mailpitDeleteAllEmails(): Chainable<void>;
+
+			/**
+			 * Set the read status of one or more emails to read.
+			 * @param messages Array of Message objects to mark as read
+			 */
+			mailpitSetStatusAsRead(
+				messages?: Message[] | Message | MessageSummary[] | MessageSummary | null,
+			): Chainable<string>;
+
+			/**
+			 * Set the read status of one or more emails to unread.
+			 * @param messages Array of Message objects to mark as unread
+			 */
+			mailpitSetStatusAsUnRead(
+				messages?: Message[] | Message | MessageSummary[] | MessageSummary | null,
+			): Chainable<string>;
+
+			/**
+			 * Set the read status of all emails to read.
+			 */
+			mailpitSetAllEmailStatusAsRead(): Chainable<void>;
+
+			/**
+			 * Set the read status of all emails to unread.
+			 */
+			mailpitSetAllEmailStatusAsUnRead(): Chainable<void>;
 		}
 	}
 }

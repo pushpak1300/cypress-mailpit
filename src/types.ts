@@ -122,7 +122,6 @@ export interface MessageSummary extends MessageBase {
 	ReplyTo: EmailAddress[];
 	/** The text body of the email. */
 	Snippet: string;
-	/** The text body of the email. */
 }
 
 /**

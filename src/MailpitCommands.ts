@@ -1,4 +1,4 @@
-import type { Message, MessagesSummary, SendEmailOptions, SpamAssassin } from "./types";
+import type { Message, MessageSummary, MessagesSummary, SendEmailOptions, SpamAssassin } from "./types";
 
 class MailpitCommands {
 	private readonly baseUrl: string;
@@ -17,6 +17,8 @@ class MailpitCommands {
 			"mailpitHasEmailsByTo",
 			"mailpitNotHasEmailsBySubject",
 			"mailpitNotHasEmailsByTo",
+			"mailpitSetAllEmailStatusAsRead",
+			"mailpitSetAllEmailStatusAsUnRead",
 		];
 	}
 
@@ -30,6 +32,8 @@ class MailpitCommands {
 			"mailpitGetAttachments",
 			"mailpitGetMailSpamAssassinSummary",
 			"mailpitGetMailSpamAssainSummary", // deprecated only for backward compatibility
+			"mailpitSetStatusAsRead",
+			"mailpitSetStatusAsUnRead",
 		];
 	}
 
@@ -233,6 +237,60 @@ class MailpitCommands {
 				}
 				return response.body as string;
 			});
+	}
+
+	private setReadStatus(
+		messages: Message[] | Message | MessageSummary[] | MessageSummary | null,
+		isRead: boolean,
+	): Cypress.Chainable<string> {
+		let messageIds: string[] = [];
+
+		if (messages) {
+			if (Array.isArray(messages)) {
+				messageIds = messages.map((message) => message.ID);
+			} else if ("ID" in messages) {
+				messageIds = [messages.ID];
+			}
+		}
+
+		const body = {
+			IDs: messageIds,
+			Read: isRead,
+		};
+
+		return cy
+			.request({
+				method: "PUT",
+				url: this.mailpitUrl("/v1/messages"),
+				body: body,
+				auth: this.auth,
+			})
+			.then((response) => {
+				if (response.status !== 200) {
+					throw new Error(
+						`Failed to set ${isRead ? "read" : "unread"} status. Status: ${response.status}, Body: ${response.body}`,
+					);
+				}
+				return response.body as string;
+			});
+	}
+
+	mailpitSetAllEmailStatusAsRead(): Cypress.Chainable<string> {
+		return this.setReadStatus(null, true);
+	}
+
+	mailpitSetAllEmailStatusAsUnRead(): Cypress.Chainable<string> {
+		return this.setReadStatus(null, false);
+	}
+
+	mailpitSetStatusAsRead(messages: Message[] | Message | MessageSummary[] | MessageSummary): Cypress.Chainable<string> {
+		return this.setReadStatus(messages, true);
+	}
+
+	mailpitSetStatusAsUnRead(
+		messages: Message[] | Message | MessageSummary[] | MessageSummary,
+	): Cypress.Chainable<string> {
+		return this.setReadStatus(messages, false);
 	}
 }
 

@@ -5,7 +5,8 @@
   "main": "rewrite/index.js",
   "types": "cypress.d.ts",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1",
+    "dev": "npm run build && npm run cy:dev",
+    "test": "cypress run --headless",
     "release": "standard-version",
     "check": "biome check",
     "format": "biome format",
