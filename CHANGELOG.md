@@ -2,6 +2,18 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+## [1.2.0](https://github.com/pushpak1300/cypress-mailpit/compare/v1.1.1...v1.2.0) (2024-08-25)
+
+
+### Features
+
+* add commands to read and unread emails ([e8909c2](https://github.com/pushpak1300/cypress-mailpit/commit/e8909c258ec8c4f6cc809f75430e65c41839f641))
+
+
+### Bug Fixes
+
+* use string syntax in staed of string literal ([74230b6](https://github.com/pushpak1300/cypress-mailpit/commit/74230b67a3149cd61e1af044cd058fa696de6534))
+
 ## [1.1.1](https://github.com/pushpak1300/cypress-mailpit/compare/v1.1.0...v1.1.1) (2024-07-09)
 
 
