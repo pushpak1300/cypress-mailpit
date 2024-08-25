@@ -149,7 +149,7 @@ describe("mailpit query test", () => {
 		const numberOfEmails = 5;
 		for (let i = 1; i <= numberOfEmails; i++) {
 			cy.mailpitSendMail({
-				to: [{ Email: `test@example.com`, Name: `To` }],
+				to: [{ Email: "test@example.com", Name: "To" }],
 			});
 		}
 		for (let i = 1; i <= numberOfEmails; i++) {
