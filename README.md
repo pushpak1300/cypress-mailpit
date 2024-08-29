@@ -149,7 +149,7 @@ Sends an email with the given options. If no options are provided, sends a defau
 
 ```JavaScript
 cy
-  .mailpitSendMail({ to: 'recipient@example.com', subject: 'Hello', text: 'Test message' })
+  .mailpitSendMail({ to: [{ Email: 'recipient@example.com' }], subject: 'Hello', text: 'Test message' })
   .should('have.property', 'ID');
 ```
 
