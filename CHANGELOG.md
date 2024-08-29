@@ -2,6 +2,13 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+## [1.2.1](https://github.com/pushpak1300/cypress-mailpit/compare/v1.2.0...v1.2.1) (2024-08-29)
+
+
+### Bug Fixes
+
+* **docs:** refactor the example of mailpitSendMail method usage ([#35](https://github.com/pushpak1300/cypress-mailpit/issues/35)) ([ba74d46](https://github.com/pushpak1300/cypress-mailpit/commit/ba74d46cefad9124311729181b12583693895ed0))
+
 ## [1.2.0](https://github.com/pushpak1300/cypress-mailpit/compare/v1.1.1...v1.2.0) (2024-08-25)
 
 
