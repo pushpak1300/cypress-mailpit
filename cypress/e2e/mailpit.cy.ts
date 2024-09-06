@@ -97,7 +97,8 @@ describe("mailpit query test", () => {
 			textBody: "Test",
 			htmlBody: "<p>Test</p>",
 		});
-		cy.mailpitGetMail()
+		cy
+			.mailpitGetMail()
 			.mailpitGetAttachments()
 			.should("length", 2)
 			.should("contain", "hello2.txt")

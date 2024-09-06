@@ -141,9 +141,7 @@ declare global {
 			 * Set the read status of one or more emails to read.
 			 * @param messages Array of Message objects to mark as read
 			 */
-			mailpitSetStatusAsRead(
-				messages?: Message[] | Message | MessageSummary[] | MessageSummary | null,
-			): Chainable<string>;
+			mailpitSetStatusAsRead(messages?: Message[] | Message | MessageSummary[] | MessageSummary | null): Chainable<string>;
 
 			/**
 			 * Set the read status of one or more emails to unread.

@@ -161,7 +161,11 @@ class MailpitCommands {
 	}
 
 	mailpitDeleteAllEmails(): Cypress.Chainable<Cypress.Response<void>> {
-		return cy.request({ method: "DELETE", url: this.mailpitUrl("/v1/messages"), auth: this.auth });
+		return cy.request({
+			method: "DELETE",
+			url: this.mailpitUrl("/v1/messages"),
+			auth: this.auth,
+		});
 	}
 
 	// Single Mail Assertions
