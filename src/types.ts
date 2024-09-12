@@ -68,7 +68,7 @@ interface MessageBase {
 	ID: string;
 	/** The message ID of the email. */
 	MessageID: string;
-	/** The size of the email. */
+	/** The size of the email in bytes. */
 	Size: number;
 	/** The subject of the email. */
 	Subject: string;
@@ -82,25 +82,19 @@ interface MessageBase {
 export interface Message extends MessageBase {
 	/** The list of attachments associated with the email. */
 	Attachments: Attachment[];
-	/** The list of email addresses the email was sent to. */
+	/** The list of email addresses the email was BCC'd to. */
 	Bcc: EmailAddress[];
-	/** The list of email addresses the email was sent to. */
+	/** The list of email addresses the email was CC'd to. */
 	Cc: EmailAddress[];
-	/** The date the email was created. */
+	/** The date the email was created or received. */
 	Date: string; // Assuming Date is in ISO 8601 format
 	/** The HTML body of the email. */
 	HTML: string;
-	/** The headers of the email. */
-	Inline: {
-		ContentID: string;
-		ContentType: string;
-		FileName: string;
-		PartID: string;
-		Size: number;
-	}[];
-	/** The list of email addresses the email was sent to. */
+	/** The inline attachments of the email. */
+	Inline: Attachment[];
+	/** The list of email addresses to reply to. */
 	ReplyTo: EmailAddress[];
-	/** The text body of the email. */
+	/** The Return-Path of the email. */
 	ReturnPath: string;
 	/** The text body of the email. */
 	Text: string;
@@ -110,17 +104,17 @@ export interface Message extends MessageBase {
 export interface MessageSummary extends MessageBase {
 	/** The number of attachments associated with the email. */
 	Attachments: number;
-	/** The list of email addresses the email was sent to. */
+	/** The list of email addresses the email was BCC'd to. */
 	Bcc: EmailAddress[];
-	/** The list of email addresses the email was sent to. */
+	/** The list of email addresses the email was CC'd to. */
 	Cc: EmailAddress[];
 	/** The date the email was created. */
 	Created: string; // Assuming Created is in ISO 8601 format
-	/** The list of email addresses the email was sent to. */
+	/** Whether the email has been read. */
 	Read: boolean;
-	/** The list of email addresses the email was sent to. */
+	/** The list of email addresses to reply to. */
 	ReplyTo: EmailAddress[];
-	/** The text body of the email. */
+	/** A snippet of the email body. */
 	Snippet: string;
 }
 
