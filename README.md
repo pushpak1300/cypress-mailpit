@@ -153,15 +153,6 @@ cy
   .should('have.property', 'ID');
 ```
 
-#### mailpitHasEmailsBySubject(subject, start = 0, limit = 50)
-
-Checks if there are any emails in Mailpit with the given subject. Yields a boolean value.
-
-```JavaScript
-cy.mailpitHasEmailsBySubject('My Test').should('be.true');
-```
-
-
 #### mailpitGetEmailsByTo(email, start = 0, limit = 50)
 
 Fetches all emails from Mailpit sent to the given email address. Yields an array of matching emails.
@@ -177,22 +168,36 @@ cy.mailpitGetEmailsBySubject('recipient@example.com').then((result) => {
 });
 ```
 
-### mailpitHasEmailsByTo(email, start = 0, limit = 50)
-Checks if there are any emails in Mailpit sent to the given email address. Yields a boolean value.
+#### mailpitHasEmailsBySubject(subject, start = 0, limit = 50, { timeout = 10000, interval = 1000 })
+
+Checks if there are any emails in Mailpit with the given subject.
+If no emails are found, the command will retry until the timeout is reached.
 
 ```JavaScript
-cy.mailpitHasEmailsByTo('recipient@example.com');
+cy.mailpitHasEmailsBySubject('My Test').should('be.true');
 ```
 
-### mailpitNotHasEmailsBySubject(subject, start = 0, limit = 50)
-Checks if there are emails in Mailpit with the given subject. Yields a boolean value.
+### mailpitHasEmailsByTo(email, start = 0, limit = 50, { timeout = 10000, interval = 1000 })
+Checks if there are any emails in Mailpit sent to the given email address.
+If no emails are found, the command will retry until the timeout is reached.
+
+```JavaScript
+cy.mailpitHasEmailsByTo('recipient@example.com', 0, 50, { timeout: 10000, interval: 1000 }).should('be.true');
+```
+
+### mailpitNotHasEmailsBySubject(subject, start = 0, limit = 50, { timeout = 10000, interval = 1000 })
+Checks if there are emails in Mailpit with the given subject. 
+If no emails are found, the command will retry until the timeout is reached.
+
 ```JavaScript
 cy.mailpitNotHasEmailsBySubject('My Test').should('be.true');
 ```
 
 
-### mailpitNotHasEmailsByTo(email, start = 0, limit = 50)
-Checks if there are any emails in Mailpit sent to the given email address. Yields a boolean value.
+### mailpitNotHasEmailsByTo(email, start = 0, limit = 50, { timeout = 10000, interval = 1000 })
+Checks if there are any emails in Mailpit sent to the given email address. 
+If no emails are found, the command will retry until the timeout is reached.
+
 ```JavaScript
 cy.mailpitNotHasEmailsByTo('recipient@example.com');
 ```

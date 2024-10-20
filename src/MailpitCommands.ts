@@ -136,28 +136,60 @@ class MailpitCommands {
 		return this.mailpitSearchEmails(`subject:${subject}`, start, limit);
 	}
 
-	mailpitHasEmailsBySubject(subject: string, start = 0, limit = 50): Cypress.Chainable {
-		return this.mailpitGetEmailsBySubject(subject, start, limit)
-			.should("have.property", "messages_count")
-			.should("be.gt", 0);
+	mailpitHasEmailsBySubject(
+		subject: string,
+		start = 0,
+		limit = 50,
+		options: { timeout?: number; interval?: number } = {},
+	): Cypress.Chainable<MessagesSummary> {
+		return this.waitForCondition(
+			() => this.mailpitGetEmailsBySubject(subject, start, limit),
+			(result) => result.messages_count > 0,
+			options,
+		);
 	}
 
-	mailpitNotHasEmailsBySubject(subject: string, start = 0, limit = 50): Cypress.Chainable {
-		return this.mailpitGetEmailsBySubject(subject, start, limit)
-			.should("have.property", "messages_count")
-			.should("equal", 0);
+	mailpitNotHasEmailsBySubject(
+		subject: string,
+		start = 0,
+		limit = 50,
+		options: { timeout?: number; interval?: number } = {},
+	): Cypress.Chainable<MessagesSummary> {
+		return this.waitForCondition(
+			() => this.mailpitGetEmailsBySubject(subject, start, limit),
+			(result) => result.messages_count === 0,
+			options,
+		);
 	}
 
 	mailpitGetEmailsByTo(email: string, start = 0, limit = 50): Cypress.Chainable<MessagesSummary> {
 		return this.mailpitSearchEmails(`to:${email}`, start, limit);
 	}
 
-	mailpitHasEmailsByTo(email: string, start = 0, limit = 50): Cypress.Chainable {
-		return this.mailpitGetEmailsByTo(email, start, limit).should("have.property", "messages_count").should("be.gt", 0);
+	mailpitHasEmailsByTo(
+		email: string,
+		start = 0,
+		limit = 50,
+		options: { timeout?: number; interval?: number } = {},
+	): Cypress.Chainable<MessagesSummary> {
+		return this.waitForCondition(
+			() => this.mailpitGetEmailsByTo(email, start, limit),
+			(result) => result.messages_count > 0,
+			options,
+		);
 	}
 
-	mailpitNotHasEmailsByTo(email: string, start = 0, limit = 50): Cypress.Chainable {
-		return this.mailpitGetEmailsByTo(email, start, limit).should("have.property", "messages_count").should("equal", 0);
+	mailpitNotHasEmailsByTo(
+		email: string,
+		start = 0,
+		limit = 50,
+		options: { timeout?: number; interval?: number } = {},
+	): Cypress.Chainable<MessagesSummary> {
+		return this.waitForCondition(
+			() => this.mailpitGetEmailsByTo(email, start, limit),
+			(result) => result.messages_count === 0,
+			options,
+		);
 	}
 
 	mailpitDeleteAllEmails(): Cypress.Chainable<Cypress.Response<void>> {
@@ -295,6 +327,34 @@ class MailpitCommands {
 		messages: Message[] | Message | MessageSummary[] | MessageSummary,
 	): Cypress.Chainable<string> {
 		return this.setReadStatus(messages, false);
+	}
+
+	private waitForCondition<T>(
+		fn: () => Cypress.Chainable<T>,
+		condition: (result: T) => boolean,
+		options: { timeout?: number; interval?: number } = {},
+	): Cypress.Chainable<T> {
+		const timeout = options.timeout ?? Cypress.config("defaultCommandTimeout");
+		const interval = options.interval ?? 500;
+		if (interval > timeout) {
+			throw new Error(`Interval ${interval} cannot be greater than timeout ${timeout}`);
+		}
+		const startTime = Date.now();
+
+		const check = (): Cypress.Chainable<T> => {
+			return fn().then((result) => {
+				if (condition(result)) {
+					return cy.wrap(result);
+				}
+				if (Date.now() - startTime < timeout) {
+					return cy.wait(interval).then(check);
+				}
+
+				throw new Error(`Timed out after ${timeout}ms waiting for condition`);
+			});
+		};
+
+		return check();
 	}
 }
 
