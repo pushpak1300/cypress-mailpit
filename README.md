@@ -8,27 +8,49 @@
 This package provides a comprehensive set of Cypress commands designed specifically for interacting with [Mailpit](https://mailpit.axllent.org/), a popular mail testing tool.
 This package supports TypeScript out of the box.
 
+## Table of Contents
+- [Features](#features)
+- [Setup](#setup)
+- [Commands Reference](#commands-reference)
+  - Mail Management
+    - [mailpitGetAllMails](#mailpitgetallmailsstart--0-limit--50)
+    - [mailpitSearchEmails](#mailpitsearchemailsquery-start--0-limit--50)
+    - [mailpitGetEmailsBySubject](#mailpitgetemailsbysubjectsubject-start--0-limit--50)
+    - [mailpitGetEmailsByTo](#mailpitgetemailsbytomail-start--0-limit--50)
+    - [mailpitGetMail](#mailpitgetmailid)
+    - [mailpitSendMail](#mailpitsendmailoptions)
+    - [mailpitDeleteAllEmails](#mailpitdeleteallmails)
+  - Email Assertions
+    - [mailpitHasEmailsBySearch](#mailpithasemailsbysearchquery-start--0-limit--50--timeout--10000-interval--500-)
+    - [mailpitNotHasEmailsBySearch](#mailpitnothasemailsbysearchquery-start--0-limit--50--timeout--4000-interval--500-)
+    - [mailpitHasEmailsBySubject](#mailpithasemailsbysubjectsubject-start--0-limit--50--timeout--4000-interval--500-)
+    - [mailpitHasEmailsByTo](#mailpithasemailsbytomail-start--0-limit--50--timeout--4000-interval--500-)
+    - [mailpitNotHasEmailsBySubject](#mailpitnothasemailsbysubjectsubject-start--0-limit--50--timeout--4000-interval--500-)
+    - [mailpitNotHasEmailsByTo](#mailpitnothasemailsbytomail-start--0-limit--50--timeout--10000-interval--500-)
+  - Single Mail Operations
+    - [mailpitGetMailTextBody](#mailpitgetmailtextbodymessage)
+    - [mailpitGetMailHTMLBody](#mailpitgetmailhtmlbodymessage)
+    - [mailpitGetFromAddress](#mailpitgetfromaddressmessage)
+    - [mailpitGetRecipientAddress](#mailpitgetrecipientaddressmessage)
+    - [mailpitGetSubject](#mailpitgetsubjectmessage)
+    - [mailpitGetAttachments](#mailpitgetattachmentsmessage)
+    - [mailpitGetMailSpamAssassinSummary](#mailpitgetmailspamassassinsummarymessage)
+  - Email Status Management
+    - [mailpitSetAllEmailStatusAsRead](#mailpitsetallemailstatusasread)
+    - [mailpitSetAllEmailStatusAsUnRead](#mailpitsetallemailstatusasunread)
+    - [mailpitSetStatusAsRead](#mailpitsetstatusasreadmessages)
+    - [mailpitSetStatusAsUnRead](#mailpitsetstatusasunreadmessages)
+
 ### Features
-- [x] Get all mails from Mailpit
-- [x] Search mails from Mailpit
-- [x] Get mails by subject
-- [x] Get a single mail from Mailpit
-- [x] Send a mail from Mailpit
-- [x] Delete all mails from Mailpit
-- [x] Get the subject of a mail
-- [x] Get the body of a mail
-- [x] Get the sender of a mail
-- [x] Get the recipients of a mail
-- [x] Get the attachments of a mail
-- [x] Get the spam assassin summary of a mail
-- [x] TypeScript support
-- [x] Basic Auth support
-- [x] Custom Mailpit URL
-- [x] Set all emails as read
-- [x] Set all emails as unread
-- [x] Set specific email status as read
-- [x] Set specific email status as unread
-- [ ] Many more to come
+
+📨 **Email Management:** Get, search, send, and delete emails • Get emails by subject • Custom Mailpit URL support • TypeScript and Basic Auth integration
+
+📝 **Email Content:** Access email body, subject, sender, recipients, and attachments • Spam Assassin summary analysis
+
+📱 **Status Control:** Set email status (read/unread) for individual or all emails • Full status management capabilities
+
+🚀 **Coming Soon:** More exciting features in development!
+
 
 ### Setup
 
@@ -367,3 +389,4 @@ Run cypress tests
 ```bash
 npm run cy:run
 ```
+
