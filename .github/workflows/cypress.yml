@@ -1,8 +1,17 @@
-name: Cypress Test
+name: Cypress CI
 
 on: [push]
 
 jobs:
+  lint:
+    runs-on: ubuntu-latest
+    steps:
+    - uses: actions/checkout@v4
+    - name: Install dependencies
+      run: npm install
+    - name: Run biome
+      run: npm run check
+
   cypress-tests:
     runs-on: ubuntu-latest
     services:
