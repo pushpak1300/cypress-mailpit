@@ -28,6 +28,36 @@ declare global {
 			mailpitGetEmailsBySubject(subject: string, start?: number, limit?: number): Chainable<MessagesSummary>;
 
 			/**
+			 * Check if mailpit has any email with the search query
+			 * Automatically retries until the condition is met or timeout is reached.
+			 * @param query
+			 * @param start
+			 * @param limit
+			 * @param options Optional. Object with `timeout` and `interval` properties.
+			 */
+			mailpitHasEmailsBySearch(
+				query: string,
+				start?: number,
+				limit?: number,
+				options?: { timeout?: number; interval?: number },
+			): Chainable;
+
+			/**
+			 * Check if mailpit has any email with the search query
+			 * Automatically retries until the condition is met or timeout is reached.
+			 * @param query
+			 * @param start
+			 * @param limit
+			 * @param options Optional. Object with `timeout` and `interval` properties.
+			 */
+			mailpitNotHasEmailsBySearch(
+				query: string,
+				start?: number,
+				limit?: number,
+				options?: { timeout?: number; interval?: number },
+			): Chainable;
+
+			/**
 			 * Check if mails have emails using the subject.
 			 * Automatically retries until the condition is met or timeout is reached.
 			 * @param subject

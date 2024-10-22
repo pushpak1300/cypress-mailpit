@@ -19,6 +19,8 @@ class MailpitCommands {
 			"mailpitNotHasEmailsByTo",
 			"mailpitSetAllEmailStatusAsRead",
 			"mailpitSetAllEmailStatusAsUnRead",
+			"mailpitHasEmailsBySearch",
+			"mailpitNotHasEmailsBySearch"
 		];
 	}
 
@@ -134,6 +136,32 @@ class MailpitCommands {
 
 	mailpitGetEmailsBySubject(subject: string, start = 0, limit = 50): Cypress.Chainable<MessagesSummary> {
 		return this.mailpitSearchEmails(`subject:${subject}`, start, limit);
+	}
+
+	mailpitHasEmailsBySearch(
+		query: string,
+		start = 0,
+		limit = 50,
+		options: { timeout?: number; interval?: number } = {},
+	): Cypress.Chainable<MessagesSummary> {
+		return this.waitForCondition(
+			() => this.mailpitSearchEmails(query, start, limit),
+			(result) => result.messages_count > 0,
+			options,
+		);
+	}
+
+	mailpitNotHasEmailsBySearch(
+		query: string,
+		start = 0,
+		limit = 50,
+		options: { timeout?: number; interval?: number } = {},
+	): Cypress.Chainable<MessagesSummary> {
+		return this.waitForCondition(
+			() => this.mailpitSearchEmails(query, start, limit),
+			(result) => result.messages_count > 0,
+			options,
+		);
 	}
 
 	mailpitHasEmailsBySubject(
