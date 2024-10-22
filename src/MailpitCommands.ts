@@ -159,7 +159,7 @@ class MailpitCommands {
 	): Cypress.Chainable<MessagesSummary> {
 		return this.waitForCondition(
 			() => this.mailpitSearchEmails(query, start, limit),
-			(result) => result.messages_count > 0,
+			(result) => result.messages_count === 0,
 			options,
 		);
 	}

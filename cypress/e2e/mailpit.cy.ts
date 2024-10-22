@@ -171,8 +171,8 @@ describe("mailpit query test", () => {
 			subject: "Searchable Subject",
 			textBody: "This is a test email for searching.",
 		});
-		cy.mailpitHasEmailsBySearch("Searchable Subject");
-		cy.mailpitNotHasEmailsBySearch("Nonexistent Subject");
+		cy.mailpitHasEmailsBySearch("subject:Searchable Subject");
+		cy.mailpitNotHasEmailsBySearch("subject:Nonexistent");
 	});
 
 	it("can assert mailpit has emails by subject or not", () => {
