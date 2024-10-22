@@ -20,7 +20,7 @@ class MailpitCommands {
 			"mailpitSetAllEmailStatusAsRead",
 			"mailpitSetAllEmailStatusAsUnRead",
 			"mailpitHasEmailsBySearch",
-			"mailpitNotHasEmailsBySearch"
+			"mailpitNotHasEmailsBySearch",
 		];
 	}
 
