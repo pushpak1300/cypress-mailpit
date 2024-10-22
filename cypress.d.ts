@@ -28,23 +28,67 @@ declare global {
 			mailpitGetEmailsBySubject(subject: string, start?: number, limit?: number): Chainable<MessagesSummary>;
 
 			/**
-			 * Check is mails has email using subject.
+			 * Check if mailpit has any email with the search query
+			 * Automatically retries until the condition is met or timeout is reached.
+			 * @param query
+			 * @param start
+			 * @param limit
+			 * @param options Optional. Object with `timeout` and `interval` properties.
+			 */
+			mailpitHasEmailsBySearch(
+				query: string,
+				start?: number,
+				limit?: number,
+				options?: { timeout?: number; interval?: number },
+			): Chainable;
+
+			/**
+			 * Check if mailpit has any email with the search query
+			 * Automatically retries until the condition is met or timeout is reached.
+			 * @param query
+			 * @param start
+			 * @param limit
+			 * @param options Optional. Object with `timeout` and `interval` properties.
+			 */
+			mailpitNotHasEmailsBySearch(
+				query: string,
+				start?: number,
+				limit?: number,
+				options?: { timeout?: number; interval?: number },
+			): Chainable;
+
+			/**
+			 * Check if mails have emails using the subject.
+			 * Automatically retries until the condition is met or timeout is reached.
 			 * @param subject
 			 * @param start
 			 * @param limit
+			 * @param options Optional. Object with `timeout` and `interval` properties.
 			 */
-			mailpitHasEmailsBySubject(subject: string, start?: number, limit?: number): Chainable;
+			mailpitHasEmailsBySubject(
+				subject: string,
+				start?: number,
+				limit?: number,
+				options?: { timeout?: number; interval?: number },
+			): Chainable;
 
 			/**
-			 * Check is mails has not any emails using subject.
+			 * Check if mails do not have emails using the subject.
+			 * Automatically retries until the condition is met or timeout is reached.
 			 * @param subject
 			 * @param start
 			 * @param limit
+			 * @param options Optional. Object with `timeout` and `interval` properties.
 			 */
-			mailpitNotHasEmailsBySubject(subject: string, start?: number, limit?: number): Chainable;
+			mailpitNotHasEmailsBySubject(
+				subject: string,
+				start?: number,
+				limit?: number,
+				options?: { timeout?: number; interval?: number },
+			): Chainable;
 
 			/**
-			 * Get all mails from the mailbox using To.
+			 * Get all mails from the mailbox using the recipient's email address.
 			 * @param email
 			 * @param start
 			 * @param limit
@@ -52,20 +96,34 @@ declare global {
 			mailpitGetEmailsByTo(email: string, start?: number, limit?: number): Chainable<MessagesSummary>;
 
 			/**
-			 * Check is mails has email using To.
+			 * Check if mails have emails sent to a specific email address.
+			 * Automatically retries until the condition is met or timeout is reached.
 			 * @param email
 			 * @param start
 			 * @param limit
+			 * @param options Optional. Object with `timeout` and `interval` properties.
 			 */
-			mailpitHasEmailsByTo(email: string, start?: number, limit?: number): Chainable;
+			mailpitHasEmailsByTo(
+				email: string,
+				start?: number,
+				limit?: number,
+				options?: { timeout?: number; interval?: number },
+			): Chainable;
 
 			/**
-			 * Check is mails not has email using To.
+			 * Check if mails do not have emails sent to a specific email address.
+			 * Automatically retries until the condition is met or timeout is reached.
 			 * @param email
 			 * @param start
 			 * @param limit
+			 * @param options Optional. Object with `timeout` and `interval` properties.
 			 */
-			mailpitNotHasEmailsByTo(email: string, start?: number, limit?: number): Chainable;
+			mailpitNotHasEmailsByTo(
+				email: string,
+				start?: number,
+				limit?: number,
+				options?: { timeout?: number; interval?: number },
+			): Chainable;
 
 			/**
 			 * Get the mail text body.
@@ -74,13 +132,13 @@ declare global {
 			mailpitGetMailTextBody(message?: Message): Chainable<string>;
 
 			/**
-			 * Get the mail html body.
+			 * Get the mail HTML body.
 			 * @param message
 			 */
 			mailpitGetMailHTMlBody(message?: Message): Chainable<string>;
 
 			/**
-			 * Get the mail from address.
+			 * Get the mail's "From" address.
 			 * @param message
 			 */
 			mailpitGetFromAddress(message?: Message): Chainable<string>;
@@ -92,42 +150,41 @@ declare global {
 			mailpitGetAttachments(message?: Message): Chainable<string>;
 
 			/**
-			 * Get the mail spam assassin summary.
+			 * Get the mail SpamAssassin summary.
 			 * @param message
 			 */
 			mailpitGetMailSpamAssassinSummary(message?: Message): Chainable<SpamAssassin>;
 
 			/**
-			 * Get the mail spam assassin summary. this is a deprecated method. Only for backward compatibility.
+			 * Get the mail SpamAssassin summary.
+			 * This is a deprecated method for backward compatibility.
 			 * @param message
-			 * @deprecated Use mailpitGetMailSpamAssainSummary instead.
+			 * @deprecated Use `mailpitGetMailSpamAssassinSummary` instead.
 			 */
 			mailpitGetMailSpamAssainSummary(message?: Message): Chainable<SpamAssassin>;
 
 			/**
-			 * Get the mail recipient address.
+			 * Get the recipient addresses of the mail.
 			 * @param message
 			 */
 			mailpitGetRecipientAddress(message?: Message): Chainable<Array<string>>;
 
 			/**
-			 * Get the mail subject.
+			 * Get the subject of the mail.
 			 * @param message
 			 */
 			mailpitGetSubject(message?: Message): Chainable<string>;
 
 			/**
-			 * Get the mail by id.
-			 * if id is not provided, it will get the latest email.
-			 *
+			 * Get the mail by ID.
+			 * If ID is not provided, it will get the latest email.
 			 * @param id
 			 */
 			mailpitGetMail(id?: string): Chainable<Message>;
 
 			/**
-			 * Send Mail
-			 * If params are not provided, it will send a default email.
-			 *
+			 * Send an email.
+			 * If options are not provided, it will send a default email.
 			 * @param options SendEmailOptions
 			 */
 			mailpitSendMail(options?: SendEmailOptions): Chainable<{ ID: string }>;
@@ -139,13 +196,13 @@ declare global {
 
 			/**
 			 * Set the read status of one or more emails to read.
-			 * @param messages Array of Message objects to mark as read
+			 * @param messages Array of Message or MessageSummary objects to mark as read
 			 */
 			mailpitSetStatusAsRead(messages?: Message[] | Message | MessageSummary[] | MessageSummary | null): Chainable<string>;
 
 			/**
 			 * Set the read status of one or more emails to unread.
-			 * @param messages Array of Message objects to mark as unread
+			 * @param messages Array of Message or MessageSummary objects to mark as unread
 			 */
 			mailpitSetStatusAsUnRead(
 				messages?: Message[] | Message | MessageSummary[] | MessageSummary | null,

@@ -153,15 +153,6 @@ cy
   .should('have.property', 'ID');
 ```
 
-#### mailpitHasEmailsBySubject(subject, start = 0, limit = 50)
-
-Checks if there are any emails in Mailpit with the given subject. Yields a boolean value.
-
-```JavaScript
-cy.mailpitHasEmailsBySubject('My Test').should('be.true');
-```
-
-
 #### mailpitGetEmailsByTo(email, start = 0, limit = 50)
 
 Fetches all emails from Mailpit sent to the given email address. Yields an array of matching emails.
@@ -177,26 +168,64 @@ cy.mailpitGetEmailsBySubject('recipient@example.com').then((result) => {
 });
 ```
 
-### mailpitHasEmailsByTo(email, start = 0, limit = 50)
-Checks if there are any emails in Mailpit sent to the given email address. Yields a boolean value.
+#### mailpitHasEmailsBySearch(query, start = 0, limit = 50, { timeout = 10000, interval = 500 })
+
+Checks if there are any emails in Mailpit with the given query.
+Automatically retries until the condition is met or timeout is reached.
 
 ```JavaScript
-cy.mailpitHasEmailsByTo('recipient@example.com');
+cy.mailpitHasEmailsBySearch('subject:My Test').should('be.true');
 ```
 
-### mailpitNotHasEmailsBySubject(subject, start = 0, limit = 50)
-Checks if there are emails in Mailpit with the given subject. Yields a boolean value.
+
+#### mailpitNotHasEmailsBySearch(query, start = 0, limit = 50, { timeout = 4000, interval = 500 })
+
+Checks if there are any emails in Mailpit with the given search query.
+Automatically retries until the condition is met or timeout is reached.
+
+```JavaScript
+cy.mailpitNotHasEmailsBySearch('Subject:My Test').should('be.true');
+```
+
+#### mailpitHasEmailsBySubject(subject, start = 0, limit = 50, { timeout = 4000, interval = 500 })
+
+Checks if there are any emails in Mailpit with the given subject.
+Automatically retries until the condition is met or timeout is reached.
+
+```JavaScript
+cy.mailpitHasEmailsBySubject('My Test').should('be.true');
+```
+
+### mailpitHasEmailsByTo(email, start = 0, limit = 50, { timeout = 4000, interval = 500 })
+Checks if there are no emails in Mailpit sent to the given email address.
+Automatically retries until the condition is met or timeout is reached.
+
+```JavaScript
+cy.mailpitHasEmailsByTo('recipient@example.com', 0, 50, { timeout: 10000, interval: 500 }).should('be.true');
+```
+
+### mailpitNotHasEmailsBySubject(subject, start = 0, limit = 50, { timeout = 4000, interval = 500 })
+Checks if there are no emails in Mailpit with the given subject. 
+Automatically retries until the condition is met or timeout is reached.
+
 ```JavaScript
 cy.mailpitNotHasEmailsBySubject('My Test').should('be.true');
 ```
 
 
-### mailpitNotHasEmailsByTo(email, start = 0, limit = 50)
-Checks if there are any emails in Mailpit sent to the given email address. Yields a boolean value.
+### mailpitNotHasEmailsByTo(email, start = 0, limit = 50, { timeout = 10000, interval = 500 })
+Checks if there are any emails in Mailpit sent to the given email address. 
+If no emails are found, the command will retry until the timeout is reached.
+
 ```JavaScript
 cy.mailpitNotHasEmailsByTo('recipient@example.com');
 ```
+## Default Values
 
+In the `MailpitCommands` module, the following default values are used:
+
+- **Timeout**: The default value for `timeout` is determined by the `Cypress.config("defaultCommandTimeout")`. If not specified in the options, it will fallback to this configuration.
+- **Interval**: The default value for `interval` is set to `500` milliseconds if not provided in the options.
 
 #### mailpitDeleteAllEmails()
 
