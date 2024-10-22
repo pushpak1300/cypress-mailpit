@@ -220,7 +220,12 @@ If no emails are found, the command will retry until the timeout is reached.
 ```JavaScript
 cy.mailpitNotHasEmailsByTo('recipient@example.com');
 ```
+## Default Values
 
+In the `MailpitCommands` module, the following default values are used:
+
+- **Timeout**: The default value for `timeout` is determined by the `Cypress.config("defaultCommandTimeout")`. If not specified in the options, it will fallback to this configuration.
+- **Interval**: The default value for `interval` is set to `500` milliseconds if not provided in the options.
 
 #### mailpitDeleteAllEmails()
 
