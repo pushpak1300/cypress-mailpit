@@ -20,6 +20,7 @@ This package supports TypeScript out of the box.
     - [mailpitGetMail](#mailpitgetmailid)
     - [mailpitSendMail](#mailpitsendmailoptions)
     - [mailpitDeleteAllEmails](#mailpitdeleteallmails)
+    - [mailpitDeleteEmailsBySearch](#mailpitdeleteemailsbysearchquery-string)
   - Email Assertions
     - [mailpitHasEmailsBySearch](#mailpithasemailsbysearchquery-start--0-limit--50--timeout--10000-interval--500-)
     - [mailpitNotHasEmailsBySearch](#mailpitnothasemailsbysearchquery-start--0-limit--50--timeout--4000-interval--500-)
@@ -255,6 +256,14 @@ Deletes all stored mails from Mailpit.
 
 ```JavaScript
 cy.mailpitDeleteAllEmails();
+```
+
+#### mailpitDeleteEmailsBySearch(query: string)
+
+Deletes emails from the mailbox based on the search query.
+
+```JavaScript
+cy.mailpitDeleteEmailsBySearch('subject:Test');
 ```
 
 

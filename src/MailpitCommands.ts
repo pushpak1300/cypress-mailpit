@@ -7,6 +7,7 @@ class MailpitCommands {
 	static get parentCypressCommands(): string[] {
 		return [
 			"mailpitDeleteAllEmails",
+			"mailpitDeleteEmailsBySearch",
 			"mailpitGetAllMails",
 			"mailpitGetEmailsBySubject",
 			"mailpitGetMail",
@@ -224,6 +225,17 @@ class MailpitCommands {
 		return cy.request({
 			method: "DELETE",
 			url: this.mailpitUrl("/v1/messages"),
+			auth: this.auth,
+		});
+	}
+
+	mailpitDeleteEmailsBySearch(query: string): Cypress.Chainable<Cypress.Response<void>> {
+		return cy.request({
+			method: "DELETE",
+			url: this.mailpitUrl("/v1/search"),
+			qs: {
+				query: query,
+			},
 			auth: this.auth,
 		});
 	}

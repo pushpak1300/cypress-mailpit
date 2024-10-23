@@ -195,6 +195,12 @@ declare global {
 			mailpitDeleteAllEmails(): Chainable<void>;
 
 			/**
+			 * Delete emails from the mailbox based on search query.
+			 * @param query Search query to delete emails
+			 */
+			mailpitDeleteEmailsBySearch(query: string): Chainable<void>;
+
+			/**
 			 * Set the read status of one or more emails to read.
 			 * @param messages Array of Message or MessageSummary objects to mark as read
 			 */
