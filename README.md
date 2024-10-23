@@ -196,7 +196,7 @@ Checks if there are any emails in Mailpit with the given query.
 Automatically retries until the condition is met or timeout is reached.
 
 ```JavaScript
-cy.mailpitHasEmailsBySearch('subject:My Test').should('be.true');
+cy.mailpitHasEmailsBySearch('subject:My Test');
 ```
 
 
@@ -206,7 +206,7 @@ Checks if there are any emails in Mailpit with the given search query.
 Automatically retries until the condition is met or timeout is reached.
 
 ```JavaScript
-cy.mailpitNotHasEmailsBySearch('Subject:My Test').should('be.true');
+cy.mailpitNotHasEmailsBySearch('Subject:My Test');
 ```
 
 #### mailpitHasEmailsBySubject(subject, start = 0, limit = 50, { timeout = 4000, interval = 500 })
@@ -215,7 +215,7 @@ Checks if there are any emails in Mailpit with the given subject.
 Automatically retries until the condition is met or timeout is reached.
 
 ```JavaScript
-cy.mailpitHasEmailsBySubject('My Test').should('be.true');
+cy.mailpitHasEmailsBySubject('My Test');
 ```
 
 ### mailpitHasEmailsByTo(email, start = 0, limit = 50, { timeout = 4000, interval = 500 })
@@ -223,7 +223,7 @@ Checks if there are no emails in Mailpit sent to the given email address.
 Automatically retries until the condition is met or timeout is reached.
 
 ```JavaScript
-cy.mailpitHasEmailsByTo('recipient@example.com', 0, 50, { timeout: 10000, interval: 500 }).should('be.true');
+cy.mailpitHasEmailsByTo('recipient@example.com', 0, 50, { timeout: 10000, interval: 500 });
 ```
 
 ### mailpitNotHasEmailsBySubject(subject, start = 0, limit = 50, { timeout = 4000, interval = 500 })
@@ -231,7 +231,7 @@ Checks if there are no emails in Mailpit with the given subject.
 Automatically retries until the condition is met or timeout is reached.
 
 ```JavaScript
-cy.mailpitNotHasEmailsBySubject('My Test').should('be.true');
+cy.mailpitNotHasEmailsBySubject('My Test');
 ```
 
 
