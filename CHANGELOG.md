@@ -2,6 +2,13 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+## [1.4.0](https://github.com/pushpak1300/cypress-mailpit/compare/v1.3.0...v1.4.0) (2024-10-23)
+
+
+### Features
+
+* add mailpitDeleteEmailsBySearch command  ([#46](https://github.com/pushpak1300/cypress-mailpit/issues/46)) ([91a78f7](https://github.com/pushpak1300/cypress-mailpit/commit/91a78f7d143263e4d0722f0ed8af77660a70beb8))
+
 ## [1.3.0](https://github.com/pushpak1300/cypress-mailpit/compare/v1.2.1...v1.3.0) (2024-10-22)
 
 
