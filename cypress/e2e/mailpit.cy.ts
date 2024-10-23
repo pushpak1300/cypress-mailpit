@@ -268,7 +268,6 @@ describe("mailpit read status test", () => {
 	});
 });
 
-
 describe("mailpit delete test", () => {
 	beforeEach(() => {
 		cy.mailpitDeleteAllEmails();
