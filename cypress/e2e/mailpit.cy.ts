@@ -267,3 +267,30 @@ describe("mailpit read status test", () => {
 		}
 	});
 });
+
+
+describe("mailpit delete test", () => {
+	beforeEach(() => {
+		cy.mailpitDeleteAllEmails();
+	});
+
+	afterEach(() => {
+		cy.mailpitDeleteAllEmails();
+	});
+
+	it("should delete emails by search query", () => {
+		cy.mailpitSendMail({
+			subject: "Delete Me",
+			textBody: "Test",
+		});
+		cy.mailpitSendMail({
+			subject: "No Delete",
+			textBody: "Test",
+		});
+
+		cy.mailpitDeleteEmailsBySearch("subject:Delete Me");
+
+		cy.mailpitHasEmailsBySubject("No Delete");
+		cy.mailpitNotHasEmailsBySubject("Delete Me");
+	});
+});
