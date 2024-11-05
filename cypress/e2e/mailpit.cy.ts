@@ -9,7 +9,9 @@ describe("mailpit sending test", () => {
 
 	it("can send one email", () => {
 		cy.mailpitSendMail().then((result) => {
+			console.log(result)
 			expect(result).to.have.property("ID");
+			expect(result.ID).match(/\w+/);
 		});
 		cy.mailpitGetAllMails().then((result) => {
 			expect(result).to.have.property("messages_count", 1);
