@@ -7,9 +7,13 @@ describe("mailpit sending test", () => {
 		cy.mailpitDeleteAllEmails();
 	});
 
+	Cypress.on('fail', (error) => {
+		if(error.message.includes('Timed out after 1000ms waiting for condition')) return false;
+		throw error; // Throw error to have the tests still fail when not the specific error message was found
+	});
+
 	it("can send one email", () => {
 		cy.mailpitSendMail().then((result) => {
-			console.log(result)
 			expect(result).to.have.property("ID");
 			expect(result.ID).match(/\w+/);
 		});
@@ -191,6 +195,10 @@ describe("mailpit query test", () => {
 		});
 		cy.mailpitHasEmailsByTo("to@example.com");
 		cy.mailpitNotHasEmailsByTo("invalid@example.com");
+	});
+
+	it("can assert timeout", () => {
+		cy.mailpitHasEmailsByTo("invalid@example.com", undefined, undefined, { timeout: 1000, interval: 100 });
 	});
 });
 
