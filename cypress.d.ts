@@ -8,27 +8,24 @@ declare global {
 			 * Get all mails from the mailbox.
 			 * @param start
 			 * @param limit
-			 * @param options
 			 */
-			mailpitGetAllMails(start?: number, limit?: number, options?: { log?: boolean }): Chainable<MessagesSummary>;
+			mailpitGetAllMails(start?: number, limit?: number): Chainable<MessagesSummary>;
 
 			/**
 			 * Search all mails from the mailbox using query.
 			 * @param query
 			 * @param start
 			 * @param limit
-			 * @param options
 			 */
-			mailpitSearchEmails(query: string, start?: number, limit?: number, options?: { log?: boolean }): Chainable<MessagesSummary>;
+			mailpitSearchEmails(query: string, start?: number, limit?: number): Chainable<MessagesSummary>;
 
 			/**
 			 * Get all mails from the mailbox using subject.
 			 * @param subject
 			 * @param start
 			 * @param limit
-			 * @param options
 			 */
-			mailpitGetEmailsBySubject(subject: string, start?: number, limit?: number, options?: { log?: boolean }): Chainable<MessagesSummary>;
+			mailpitGetEmailsBySubject(subject: string, start?: number, limit?: number): Chainable<MessagesSummary>;
 
 			/**
 			 * Check if mailpit has any email with the search query
@@ -42,7 +39,7 @@ declare global {
 				query: string,
 				start?: number,
 				limit?: number,
-				options?: { timeout?: number; interval?: number, log?: boolean },
+				options?: { timeout?: number; interval?: number },
 			): Chainable;
 
 			/**
@@ -57,7 +54,7 @@ declare global {
 				query: string,
 				start?: number,
 				limit?: number,
-				options?: { timeout?: number; interval?: number, log?: boolean },
+				options?: { timeout?: number; interval?: number },
 			): Chainable;
 
 			/**
@@ -72,7 +69,7 @@ declare global {
 				subject: string,
 				start?: number,
 				limit?: number,
-				options?: { timeout?: number; interval?: number, log?: boolean },
+				options?: { timeout?: number; interval?: number },
 			): Chainable;
 
 			/**
@@ -87,7 +84,7 @@ declare global {
 				subject: string,
 				start?: number,
 				limit?: number,
-				options?: { timeout?: number; interval?: number, log?: boolean },
+				options?: { timeout?: number; interval?: number },
 			): Chainable;
 
 			/**
@@ -95,9 +92,8 @@ declare global {
 			 * @param email
 			 * @param start
 			 * @param limit
-			 * @param options
 			 */
-			mailpitGetEmailsByTo(email: string, start?: number, limit?: number, options?: { log?: boolean }): Chainable<MessagesSummary>;
+			mailpitGetEmailsByTo(email: string, start?: number, limit?: number): Chainable<MessagesSummary>;
 
 			/**
 			 * Check if mails have emails sent to a specific email address.
@@ -111,7 +107,7 @@ declare global {
 				email: string,
 				start?: number,
 				limit?: number,
-				options?: { timeout?: number; interval?: number, log?: boolean },
+				options?: { timeout?: number; interval?: number },
 			): Chainable;
 
 			/**
@@ -126,121 +122,107 @@ declare global {
 				email: string,
 				start?: number,
 				limit?: number,
-				options?: { timeout?: number; interval?: number, log?: boolean },
+				options?: { timeout?: number; interval?: number },
 			): Chainable;
 
 			/**
 			 * Get the mail text body.
 			 * @param message
-			 * @param options
 			 */
-			mailpitGetMailTextBody(message?: Message, options?: { log?: boolean }): Chainable<string>;
+			mailpitGetMailTextBody(message?: Message): Chainable<string>;
 
 			/**
 			 * Get the mail HTML body.
 			 * @param message
-			 * @param options
 			 */
-			mailpitGetMailHTMlBody(message?: Message, options?: { log?: boolean }): Chainable<string>;
+			mailpitGetMailHTMlBody(message?: Message): Chainable<string>;
 
 			/**
 			 * Get the mail's "From" address.
 			 * @param message
-			 * @param options
 			 */
-			mailpitGetFromAddress(message?: Message, options?: { log?: boolean }): Chainable<string>;
+			mailpitGetFromAddress(message?: Message): Chainable<string>;
 
 			/**
 			 * Get the attachments of the mail.
 			 * @param message
-			 * @param options
 			 */
-			mailpitGetAttachments(message?: Message, options?: { log?: boolean }): Chainable<string>;
+			mailpitGetAttachments(message?: Message): Chainable<string>;
 
 			/**
 			 * Get the mail SpamAssassin summary.
 			 * @param message
-			 * @param options
 			 */
-			mailpitGetMailSpamAssassinSummary(message?: Message, options?: { log?: boolean }): Chainable<SpamAssassin>;
+			mailpitGetMailSpamAssassinSummary(message?: Message): Chainable<SpamAssassin>;
 
 			/**
 			 * Get the mail SpamAssassin summary.
 			 * This is a deprecated method for backward compatibility.
 			 * @param message
-			 * @param options
 			 * @deprecated Use `mailpitGetMailSpamAssassinSummary` instead.
 			 */
-			mailpitGetMailSpamAssainSummary(message?: Message, options?: { log?: boolean }): Chainable<SpamAssassin>;
+			mailpitGetMailSpamAssainSummary(message?: Message): Chainable<SpamAssassin>;
 
 			/**
 			 * Get the recipient addresses of the mail.
 			 * @param message
-			 * @param options
 			 */
-			mailpitGetRecipientAddress(message?: Message, options?: { log?: boolean }): Chainable<Array<string>>;
+			mailpitGetRecipientAddress(message?: Message): Chainable<Array<string>>;
 
 			/**
 			 * Get the subject of the mail.
 			 * @param message
-			 * @param options
 			 */
-			mailpitGetSubject(message?: Message, options?: { log?: boolean }): Chainable<string>;
+			mailpitGetSubject(message?: Message): Chainable<string>;
 
 			/**
 			 * Get the mail by ID.
 			 * If ID is not provided, it will get the latest email.
 			 * @param id
-			 * @param options
 			 */
-			mailpitGetMail(id?: string, options?: { log?: boolean }): Chainable<Message>;
+			mailpitGetMail(id?: string): Chainable<Message>;
 
 			/**
 			 * Send an email.
 			 * If options are not provided, it will send a default email.
-			 * @param sendOptions SendEmailOptions
-			 * @param options
+			 * @param options SendEmailOptions
 			 */
-			mailpitSendMail(sendOptions?: SendEmailOptions, options?: { log?: boolean }): Chainable<{ ID: string }>;
+			mailpitSendMail(options?: SendEmailOptions): Chainable<{ ID: string }>;
 
 			/**
 			 * Delete all emails from the mailbox.
 			 */
-			mailpitDeleteAllEmails(options?: { log?: boolean }): Chainable<string>;
+			mailpitDeleteAllEmails(): Chainable<void>;
 
 			/**
 			 * Delete emails from the mailbox based on search query.
 			 * @param query Search query to delete emails
-			 * @param options
 			 */
-			mailpitDeleteEmailsBySearch(query: string, options?: { log?: boolean }): Chainable<string>;
+			mailpitDeleteEmailsBySearch(query: string): Chainable<void>;
 
 			/**
 			 * Set the read status of one or more emails to read.
 			 * @param messages Array of Message or MessageSummary objects to mark as read
-			 * @param options
 			 */
-			mailpitSetStatusAsRead(messages?: Message[] | Message | MessageSummary[] | MessageSummary | null, options?: { log?: boolean }): Chainable<string>;
+			mailpitSetStatusAsRead(messages?: Message[] | Message | MessageSummary[] | MessageSummary | null): Chainable<string>;
 
 			/**
 			 * Set the read status of one or more emails to unread.
 			 * @param messages Array of Message or MessageSummary objects to mark as unread
-			 * @param options
 			 */
 			mailpitSetStatusAsUnRead(
 				messages?: Message[] | Message | MessageSummary[] | MessageSummary | null,
-				options?: { log?: boolean }
 			): Chainable<string>;
 
 			/**
 			 * Set the read status of all emails to read.
 			 */
-			mailpitSetAllEmailStatusAsRead(options?: { log?: boolean }): Chainable<string>;
+			mailpitSetAllEmailStatusAsRead(): Chainable<void>;
 
 			/**
 			 * Set the read status of all emails to unread.
 			 */
-			mailpitSetAllEmailStatusAsUnRead(options?: { log?: boolean }): Chainable<string>;
+			mailpitSetAllEmailStatusAsUnRead(): Chainable<void>;
 		}
 	}
 }
