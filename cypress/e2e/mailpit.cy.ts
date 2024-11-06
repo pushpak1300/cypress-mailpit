@@ -7,6 +7,15 @@ describe("mailpit sending test", () => {
 		cy.mailpitDeleteAllEmails();
 	});
 
+	Cypress.on('fail', (error) => {
+		if (error.name === 'CypressError' &&
+			error.message.includes('Timed out after 1000ms waiting for condition') &&
+			error.docsUrl?.includes('mailpitHasEmailsByTo')) {
+			return false;
+		}
+		throw error; // Throw error to have the tests still fail when not the specific error message was found
+	});
+
 	it("can send one email", () => {
 		cy.mailpitSendMail().then((result) => {
 			console.log(result)
@@ -192,6 +201,10 @@ describe("mailpit query test", () => {
 		cy.mailpitHasEmailsByTo("to@example.com");
 		cy.mailpitNotHasEmailsByTo("invalid@example.com");
 	});
+});
+
+it("can assert timeout", () => {
+	cy.mailpitHasEmailsByTo("invalid@example.com", undefined, undefined, { timeout: 1000, interval: 100 });
 });
 
 describe("mailpit read status test", () => {
