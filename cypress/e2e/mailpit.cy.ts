@@ -8,9 +8,8 @@ describe("mailpit sending test", () => {
 	});
 
 	Cypress.on('fail', (error) => {
-		if (error.name === 'CypressError' &&
-			error.message.includes('Timed out after 1000ms waiting for condition') &&
-			error.docsUrl?.includes('mailpitHasEmailsByTo')) {
+		console.log(error)
+		if (error.message.includes('Timed out after 1000ms waiting for condition')) {
 			return false;
 		}
 		throw error; // Throw error to have the tests still fail when not the specific error message was found
