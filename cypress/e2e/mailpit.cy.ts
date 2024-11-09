@@ -367,7 +367,7 @@ describe("mailpit delete test", () => {
 		cy.mailpitNotHasEmailsBySubject("Delete Me");
 	});
 
-	it("mailpitDeleteEmailsBySearchcan assert no search query", () => {
+	it("should throw error on invalid search query while deleting emails", () => {
 		cy.on("fail", (err) => {
 			expect(err.message).to.contain("400: Bad Request");
 			expect(err.message).to.contain("no search query");
