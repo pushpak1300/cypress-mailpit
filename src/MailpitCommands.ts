@@ -73,7 +73,7 @@ class MailpitCommands {
 				url: this.mailpitUrl(`/v1/message/${id}`),
 				auth: this.auth,
 			})
-			.then((result) => result.body as Message);
+			.then((response) => response.body as Message);
 	}
 
 	mailpitSendMail(options?: SendEmailOptions): Cypress.Chainable<{ ID: string }> {
