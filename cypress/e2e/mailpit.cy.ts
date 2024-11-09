@@ -10,10 +10,19 @@ describe("mailpit sending test", () => {
 	it("can send one email", () => {
 		cy.mailpitSendMail().then((result) => {
 			expect(result).to.have.property("ID");
+			expect(result.ID).match(/\w+/); //Random string
 		});
 		cy.mailpitGetAllMails().then((result) => {
 			expect(result).to.have.property("messages_count", 1);
 		});
+	});
+
+	it("can assert invalid to address while sending email", () => {
+		cy.on("fail", (err) => {
+			expect(err.message).to.contain("400: Bad Request");
+			expect(err.message).to.contain("invalid To address");
+		});
+		cy.mailpitSendMail({ to: [{ Email: "", Name: "To" }] });
 	});
 
 	it("can send multiple emails", () => {
@@ -175,6 +184,30 @@ describe("mailpit query test", () => {
 		cy.mailpitNotHasEmailsBySearch("subject:Nonexistent");
 	});
 
+	it("can assert timeout on has emails by search query", () => {
+		const startTime = Date.now();
+		cy.on("fail", (error) => {
+			const finishedTime = Date.now();
+			expect(finishedTime - startTime, "Testing exception is thrown after around 1000 ms").to.be.closeTo(1000, 200);
+			expect(error.message).to.include("Timed out after 1000ms waiting for condition");
+		});
+		cy.mailpitHasEmailsBySearch("invalid@example.com", undefined, undefined, { timeout: 1000, interval: 100 });
+	});
+
+	it("can assert timeout on not has emails by search query", () => {
+		cy.mailpitSendMail({
+			subject: "Searchable Subject",
+			textBody: "This is a test email for searching.",
+		});
+		const startTime = Date.now();
+		cy.on("fail", (error) => {
+			const finishedTime = Date.now();
+			expect(finishedTime - startTime, "Testing exception is thrown after around 1000 ms").to.be.closeTo(1000, 200);
+			expect(error.message).to.include("Timed out after 1000ms waiting for condition");
+		});
+		cy.mailpitNotHasEmailsBySearch("subject:Searchable Subject", undefined, undefined, { timeout: 1000, interval: 100 });
+	});
+
 	it("can assert mailpit has emails by subject or not", () => {
 		cy.mailpitSendMail({
 			subject: "My Test",
@@ -183,12 +216,54 @@ describe("mailpit query test", () => {
 		cy.mailpitNotHasEmailsBySubject("Not");
 	});
 
+	it("can assert timeout on mailpit has emails by subject", () => {
+		const startTime = Date.now();
+		cy.on("fail", (error) => {
+			const finishedTime = Date.now();
+			expect(finishedTime - startTime, "Testing exception is thrown after around 1000 ms").to.be.closeTo(1000, 200);
+			expect(error.message).to.include("Timed out after 1000ms waiting for condition");
+		});
+		cy.mailpitHasEmailsBySubject("invalid@example.com", undefined, undefined, { timeout: 1000, interval: 100 });
+	});
+
+	it("can assert timeout on mailpit not has emails by subject", () => {
+		cy.mailpitSendMail({ subject: "My Test" });
+		const startTime = Date.now();
+		cy.on("fail", (error) => {
+			const finishedTime = Date.now();
+			expect(finishedTime - startTime, "Testing exception is thrown after around 1000 ms").to.be.closeTo(1000, 200);
+			expect(error.message).to.include("Timed out after 1000ms waiting for condition");
+		});
+		cy.mailpitNotHasEmailsBySubject("My Test", undefined, undefined, { timeout: 1000, interval: 100 });
+	});
+
 	it("can assert mailpit has emails by to or not", () => {
 		cy.mailpitSendMail({
 			to: [{ Email: "to@example.com", Name: "To" }],
 		});
 		cy.mailpitHasEmailsByTo("to@example.com");
 		cy.mailpitNotHasEmailsByTo("invalid@example.com");
+	});
+
+	it("can assert timeout on mailpit has emails by to", () => {
+		const startTime = Date.now();
+		cy.on("fail", (error) => {
+			const finishedTime = Date.now();
+			expect(finishedTime - startTime, "Testing exception is thrown after around 1000 ms").to.be.closeTo(1000, 200);
+			expect(error.message).to.include("Timed out after 1000ms waiting for condition");
+		});
+		cy.mailpitHasEmailsByTo("invalid@example.com", undefined, undefined, { timeout: 1000, interval: 100 });
+	});
+
+	it("can assert timeout on mailpit not has emails by to", () => {
+		cy.mailpitSendMail({ to: [{ Email: "to@example.com", Name: "To" }] });
+		const startTime = Date.now();
+		cy.on("fail", (error) => {
+			const finishedTime = Date.now();
+			expect(finishedTime - startTime, "Testing exception is thrown after around 1000 ms").to.be.closeTo(1000, 200);
+			expect(error.message).to.include("Timed out after 1000ms waiting for condition");
+		});
+		cy.mailpitNotHasEmailsByTo("to@example.com", undefined, undefined, { timeout: 1000, interval: 100 });
 	});
 });
 
@@ -211,8 +286,7 @@ describe("mailpit read status test", () => {
 			expect(result.messages[0].Read).to.false;
 		});
 
-		cy.mailpitGetMail().mailpitSetStatusAsRead();
-
+		cy.mailpitGetMail().mailpitSetStatusAsRead().should("eq", "ok");
 		cy.mailpitSearchEmails("Test").then((result) => {
 			expect(result.messages[0].Read).to.true;
 		});
@@ -228,7 +302,7 @@ describe("mailpit read status test", () => {
 		cy.mailpitSearchEmails("Test").then((result) => {
 			expect(result.messages[0].Read).to.true;
 		});
-		cy.mailpitGetMail().mailpitSetStatusAsUnRead();
+		cy.mailpitGetMail().mailpitSetStatusAsUnRead().should("eq", "ok");
 		cy.mailpitSearchEmails("Test").then((result) => {
 			expect(result.messages[0].Read).to.false;
 		});
@@ -247,7 +321,7 @@ describe("mailpit read status test", () => {
 			});
 		}
 
-		cy.mailpitSetAllEmailStatusAsRead();
+		cy.mailpitSetAllEmailStatusAsRead().should("eq", "ok");
 
 		// Verify all emails are now read
 		for (let index = 0; index < EmailsToSend; index++) {
@@ -257,7 +331,7 @@ describe("mailpit read status test", () => {
 		}
 
 		// Set all emails as unread
-		cy.mailpitSetAllEmailStatusAsUnRead();
+		cy.mailpitSetAllEmailStatusAsUnRead().should("eq", "ok");
 
 		// Verify all emails are now unread
 		for (let index = 0; index < EmailsToSend; index++) {
@@ -291,5 +365,13 @@ describe("mailpit delete test", () => {
 
 		cy.mailpitHasEmailsBySubject("No Delete");
 		cy.mailpitNotHasEmailsBySubject("Delete Me");
+	});
+
+	it("should throw error on invalid search query while deleting emails", () => {
+		cy.on("fail", (err) => {
+			expect(err.message).to.contain("400: Bad Request");
+			expect(err.message).to.contain("no search query");
+		});
+		cy.mailpitDeleteEmailsBySearch("");
 	});
 });

@@ -192,13 +192,13 @@ declare global {
 			/**
 			 * Delete all emails from the mailbox.
 			 */
-			mailpitDeleteAllEmails(): Chainable<void>;
+			mailpitDeleteAllEmails(): Chainable<Response<void>>;
 
 			/**
 			 * Delete emails from the mailbox based on search query.
 			 * @param query Search query to delete emails
 			 */
-			mailpitDeleteEmailsBySearch(query: string): Chainable<void>;
+			mailpitDeleteEmailsBySearch(query: string): Chainable<Response<void>>;
 
 			/**
 			 * Set the read status of one or more emails to read.
@@ -217,12 +217,12 @@ declare global {
 			/**
 			 * Set the read status of all emails to read.
 			 */
-			mailpitSetAllEmailStatusAsRead(): Chainable<void>;
+			mailpitSetAllEmailStatusAsRead(): Chainable<string>;
 
 			/**
 			 * Set the read status of all emails to unread.
 			 */
-			mailpitSetAllEmailStatusAsUnRead(): Chainable<void>;
+			mailpitSetAllEmailStatusAsUnRead(): Chainable<string>;
 		}
 	}
 }
