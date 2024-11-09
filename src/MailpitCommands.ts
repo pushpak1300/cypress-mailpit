@@ -63,17 +63,17 @@ class MailpitCommands {
 				url: this.mailpitUrl(`/v1/messages?start=${start}&limit=${limit}`),
 				auth: this.auth,
 			})
-			.its('body');
+			.then(response => response.body as MessagesSummary);
 	}
 
-	mailpitGetMail(id = "latest"): Cypress.Chainable<Message> {
+	mailpitGetMail(id = "latest"): Cypress.Chainable<MessagesSummary> {
 		return cy
 			.request({
 				method: "GET",
 				url: this.mailpitUrl(`/v1/message/${id}`),
 				auth: this.auth,
 			})
-			.its('body');
+			.then(result => result.body);
 	}
 
 	mailpitSendMail(options?: SendEmailOptions): Cypress.Chainable<{ ID: string }> {
@@ -97,7 +97,7 @@ class MailpitCommands {
 				body: body,
 				auth: this.auth,
 			})
-			.its('body');
+			.then(response => response.body as { ID: string });
 	}
 
 	mailpitSearchEmails(query: string, start = 0, limit = 50): Cypress.Chainable<MessagesSummary> {
@@ -112,7 +112,7 @@ class MailpitCommands {
 				},
 				auth: this.auth,
 			})
-			.its('body');
+			.then(response => response.body as MessagesSummary);
 	}
 
 	mailpitGetEmailsBySubject(subject: string, start = 0, limit = 50): Cypress.Chainable<MessagesSummary> {
@@ -245,7 +245,7 @@ class MailpitCommands {
 				url: this.mailpitUrl(`/v1/message/${messageId}/sa-check`),
 				auth: this.auth,
 			})
-			.its('body');
+			.then(response => response.body as SpamAssassin);
 	}
 
 	/**
@@ -266,7 +266,7 @@ class MailpitCommands {
 				url: this.mailpitUrl(`/view/${messageId}.html`, false),
 				auth: this.auth,
 			})
-			.its('body');
+			.then(response => response.body as string);
 	}
 
 	mailpitGetMailTextBody(message: Message): Cypress.Chainable<string> {
@@ -277,7 +277,7 @@ class MailpitCommands {
 				url: this.mailpitUrl(`/view/${messageId}.txt`, false),
 				auth: this.auth,
 			})
-			.its('body');
+			.then(response => response.body as string);
 	}
 
 	private setReadStatus(
@@ -306,7 +306,7 @@ class MailpitCommands {
 				body: body,
 				auth: this.auth,
 			})
-			.its('body');
+			.then(response => response.body as string);
 	}
 
 	mailpitSetAllEmailStatusAsRead(): Cypress.Chainable<string> {
