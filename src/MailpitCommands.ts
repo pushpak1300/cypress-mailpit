@@ -66,14 +66,14 @@ class MailpitCommands {
 			.then((response) => response.body as MessagesSummary);
 	}
 
-	mailpitGetMail(id = "latest"): Cypress.Chainable<MessagesSummary> {
+	mailpitGetMail(id = "latest"): Cypress.Chainable<Message> {
 		return cy
 			.request({
 				method: "GET",
 				url: this.mailpitUrl(`/v1/message/${id}`),
 				auth: this.auth,
 			})
-			.then((result) => result.body);
+			.then((result) => result.body as Message);
 	}
 
 	mailpitSendMail(options?: SendEmailOptions): Cypress.Chainable<{ ID: string }> {
