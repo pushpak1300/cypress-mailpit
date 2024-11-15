@@ -13,7 +13,7 @@ declare global {
 
 			/**
 			 * Search all mails from the mailbox using query.
-			 * @param query
+			 * @param query {@link https://mailpit.axllent.org/docs/usage/search-filters/ | Query Refrence}
 			 * @param start
 			 * @param limit
 			 */
@@ -30,7 +30,7 @@ declare global {
 			/**
 			 * Check if mailpit has any email with the search query
 			 * Automatically retries until the condition is met or timeout is reached.
-			 * @param query
+			 * @param query {@link https://mailpit.axllent.org/docs/usage/search-filters/ | Query Refrence}
 			 * @param start
 			 * @param limit
 			 * @param options Optional. Object with `timeout` and `interval` properties.
@@ -45,7 +45,7 @@ declare global {
 			/**
 			 * Check if mailpit has any email with the search query
 			 * Automatically retries until the condition is met or timeout is reached.
-			 * @param query
+			 * @param query {@link https://mailpit.axllent.org/docs/usage/search-filters/ | Query Refrence}
 			 * @param start
 			 * @param limit
 			 * @param options Optional. Object with `timeout` and `interval` properties.
@@ -196,7 +196,7 @@ declare global {
 
 			/**
 			 * Delete emails from the mailbox based on search query.
-			 * @param query Search query to delete emails
+			 * @param query {@link https://mailpit.axllent.org/docs/usage/search-filters/ | Query Refrence}
 			 */
 			mailpitDeleteEmailsBySearch(query: string): Chainable<Response<void>>;
 
