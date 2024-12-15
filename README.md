@@ -81,7 +81,7 @@ Add the base URL of your Mailpit installation in the `e2e` block of your `cypres
 export default defineConfig({
   projectId: "****",
   env: {
-    MAILPIT_URL: "http://localhost:8025/",
+    MAILPIT_URL: "http://localhost:8025",
   },
 });
 ```
