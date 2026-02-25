@@ -1,13 +1,15 @@
 {
 	"compilerOptions": {
 		"baseUrl": ".",
-		"target": "es5",
-		"lib": ["es5", "dom"],
+		"outDir": "dist",
+		"target": "es2015",
+		"lib": ["es2015", "dom"],
 		"types": ["cypress", "node"],
 		"strict": true,
 		"skipLibCheck": true,
+		"declaration": true,
 		"allowSyntheticDefaultImports": true
 	},
-	"include": ["index.ts", "src/**/*.ts", "cypress.d.ts"],
+	"include": ["index.ts", "src/**/*.ts"],
 	"exclude": ["node_modules"]
 }

@@ -1,4 +1,4 @@
-import type { Message, MessageSummary, MessagesSummary, SendEmailOptions, SpamAssassin } from "./src/types";
+import type { Message, MessageSummary, MessagesSummary, SendEmailOptions, SpamAssassin } from "./dist/src/types";
 
 /// <reference types="cypress" />
 declare global {
