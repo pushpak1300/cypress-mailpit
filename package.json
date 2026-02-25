@@ -7,7 +7,6 @@
 	"scripts": {
 		"dev": "npm run build && npm run cy:dev",
 		"test": "cypress run --headless",
-		"release": "standard-version",
 		"check": "oxlint && oxfmt --check",
 		"format": "oxfmt",
 		"lint": "oxlint",
