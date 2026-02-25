@@ -6,7 +6,8 @@
 	"types": "cypress.d.ts",
 	"files": [
 		"dist",
-		"cypress.d.ts"
+		"cypress.d.ts",
+		"README.md"
 	],
 	"scripts": {
 		"dev": "npm run build && npm run cy:dev",
