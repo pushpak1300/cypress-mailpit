@@ -57,7 +57,7 @@ typings/
 # dotenv environment variables file
 .env
 
-**/*.js
+dist/
 
 /cypress/screenshots/*
 

@@ -2,8 +2,12 @@
 	"name": "cypress-mailpit",
 	"version": "2.0.0",
 	"description": "Cypress Commands for Mailpit 💌",
-	"main": "rewrite/index.js",
+	"main": "dist/index.js",
 	"types": "cypress.d.ts",
+	"files": [
+		"dist",
+		"cypress.d.ts"
+	],
 	"scripts": {
 		"dev": "npm run build && npm run cy:dev",
 		"test": "cypress run --headless",
