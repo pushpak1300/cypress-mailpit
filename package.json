@@ -1,6 +1,6 @@
 {
 	"name": "cypress-mailpit",
-	"version": "1.4.0",
+	"version": "2.0.0",
 	"description": "Cypress Commands for Mailpit 💌",
 	"main": "rewrite/index.js",
 	"types": "cypress.d.ts",
@@ -34,6 +34,9 @@
 		"url": "https://github.com/pushpak1300/cypress-mailpit/issues"
 	},
 	"homepage": "https://github.com/pushpak1300/cypress-mailpit#readme",
+	"peerDependencies": {
+		"cypress": ">=15.10.0"
+	},
 	"devDependencies": {
 		"cypress": "^15.11.0",
 		"oxfmt": "^0.7.0",

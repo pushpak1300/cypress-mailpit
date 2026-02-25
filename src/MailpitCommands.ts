@@ -2,7 +2,6 @@ import type { Message, MessageSummary, MessagesSummary, SendEmailOptions, SpamAs
 
 class MailpitCommands {
 	private readonly baseUrl: string;
-	private readonly auth!: { user: string; pass: string } | undefined;
 
 	static get parentCypressCommands(): string[] {
 		return [
@@ -45,35 +44,38 @@ class MailpitCommands {
 	}
 
 	constructor() {
-		this.baseUrl = Cypress.env("MAILPIT_URL") ?? "http://localhost:8025";
-		const user = Cypress.env("MAILPIT_USERNAME");
-		const pass = Cypress.env("MAILPIT_PASSWORD");
-		if (user && pass) {
-			this.auth = {
-				user: user,
-				pass: pass,
-			};
-		}
+		this.baseUrl = Cypress.expose("MAILPIT_URL") ?? "http://localhost:8025";
+	}
+
+	private resolveAuth(): Cypress.Chainable<{ user: string; pass: string } | undefined> {
+		return cy.env(["MAILPIT_USERNAME", "MAILPIT_PASSWORD"]).then((env) => {
+			const user = (env as Record<string, string>).MAILPIT_USERNAME;
+			const pass = (env as Record<string, string>).MAILPIT_PASSWORD;
+			if (user && pass) {
+				return cy.wrap<{ user: string; pass: string } | undefined>({ user, pass });
+			}
+			return cy.wrap<{ user: string; pass: string } | undefined>(undefined);
+		});
+	}
+
+	private request(options: Partial<Cypress.RequestOptions>): Cypress.Chainable<Cypress.Response<unknown>> {
+		return this.resolveAuth().then((auth) => {
+			return cy.request({ ...options, auth });
+		});
 	}
 
 	mailpitGetAllMails(start = 0, limit = 50): Cypress.Chainable<MessagesSummary> {
-		return cy
-			.request({
-				method: "GET",
-				url: this.mailpitUrl(`/v1/messages?start=${start}&limit=${limit}`),
-				auth: this.auth,
-			})
-			.then((response) => response.body as MessagesSummary);
+		return this.request({
+			method: "GET",
+			url: this.mailpitUrl(`/v1/messages?start=${start}&limit=${limit}`),
+		}).then((response) => response.body as MessagesSummary);
 	}
 
 	mailpitGetMail(id = "latest"): Cypress.Chainable<Message> {
-		return cy
-			.request({
-				method: "GET",
-				url: this.mailpitUrl(`/v1/message/${id}`),
-				auth: this.auth,
-			})
-			.then((response) => response.body as Message);
+		return this.request({
+			method: "GET",
+			url: this.mailpitUrl(`/v1/message/${id}`),
+		}).then((response) => response.body as Message);
 	}
 
 	mailpitSendMail(options?: SendEmailOptions): Cypress.Chainable<{ ID: string }> {
@@ -90,29 +92,23 @@ class MailpitCommands {
 			Text: options?.textBody ?? "hello from mailpit",
 			To: options?.to ?? [{ Email: "jane@example.com", Name: "Jane" }],
 		};
-		return cy
-			.request({
-				method: "POST",
-				url: this.mailpitUrl("/v1/send"),
-				body: body,
-				auth: this.auth,
-			})
-			.then((response) => response.body as { ID: string });
+		return this.request({
+			method: "POST",
+			url: this.mailpitUrl("/v1/send"),
+			body: body,
+		}).then((response) => response.body as { ID: string });
 	}
 
 	mailpitSearchEmails(query: string, start = 0, limit = 50): Cypress.Chainable<MessagesSummary> {
-		return cy
-			.request({
-				method: "GET",
-				url: this.mailpitUrl("/v1/search"),
-				qs: {
-					query: query,
-					start: start,
-					limit: limit,
-				},
-				auth: this.auth,
-			})
-			.then((response) => response.body as MessagesSummary);
+		return this.request({
+			method: "GET",
+			url: this.mailpitUrl("/v1/search"),
+			qs: {
+				query: query,
+				start: start,
+				limit: limit,
+			},
+		}).then((response) => response.body as MessagesSummary);
 	}
 
 	mailpitGetEmailsBySubject(subject: string, start = 0, limit = 50): Cypress.Chainable<MessagesSummary> {
@@ -202,22 +198,20 @@ class MailpitCommands {
 	}
 
 	mailpitDeleteAllEmails(): Cypress.Chainable<Cypress.Response<void>> {
-		return cy.request({
+		return this.request({
 			method: "DELETE",
 			url: this.mailpitUrl("/v1/messages"),
-			auth: this.auth,
-		});
+		}) as Cypress.Chainable<Cypress.Response<void>>;
 	}
 
 	mailpitDeleteEmailsBySearch(query: string): Cypress.Chainable<Cypress.Response<void>> {
-		return cy.request({
+		return this.request({
 			method: "DELETE",
 			url: this.mailpitUrl("/v1/search"),
 			qs: {
 				query: query,
 			},
-			auth: this.auth,
-		});
+		}) as Cypress.Chainable<Cypress.Response<void>>;
 	}
 
 	// Single Mail Assertions
@@ -239,13 +233,10 @@ class MailpitCommands {
 
 	mailpitGetMailSpamAssassinSummary(message: Message): Cypress.Chainable<SpamAssassin> {
 		const messageId = message.ID;
-		return cy
-			.request({
-				method: "GET",
-				url: this.mailpitUrl(`/v1/message/${messageId}/sa-check`),
-				auth: this.auth,
-			})
-			.then((response) => response.body as SpamAssassin);
+		return this.request({
+			method: "GET",
+			url: this.mailpitUrl(`/v1/message/${messageId}/sa-check`),
+		}).then((response) => response.body as SpamAssassin);
 	}
 
 	/**
@@ -260,24 +251,18 @@ class MailpitCommands {
 
 	mailpitGetMailHTMlBody(message: Message): Cypress.Chainable<string> {
 		const messageId = message.ID;
-		return cy
-			.request({
-				method: "GET",
-				url: this.mailpitUrl(`/view/${messageId}.html`, false),
-				auth: this.auth,
-			})
-			.then((response) => response.body as string);
+		return this.request({
+			method: "GET",
+			url: this.mailpitUrl(`/view/${messageId}.html`, false),
+		}).then((response) => response.body as string);
 	}
 
 	mailpitGetMailTextBody(message: Message): Cypress.Chainable<string> {
 		const messageId = message.ID;
-		return cy
-			.request({
-				method: "GET",
-				url: this.mailpitUrl(`/view/${messageId}.txt`, false),
-				auth: this.auth,
-			})
-			.then((response) => response.body as string);
+		return this.request({
+			method: "GET",
+			url: this.mailpitUrl(`/view/${messageId}.txt`, false),
+		}).then((response) => response.body as string);
 	}
 
 	private setReadStatus(
@@ -299,14 +284,11 @@ class MailpitCommands {
 			Read: isRead,
 		};
 
-		return cy
-			.request({
-				method: "PUT",
-				url: this.mailpitUrl("/v1/messages"),
-				body: body,
-				auth: this.auth,
-			})
-			.then((response) => response.body as string);
+		return this.request({
+			method: "PUT",
+			url: this.mailpitUrl("/v1/messages"),
+			body: body,
+		}).then((response) => response.body as string);
 	}
 
 	mailpitSetAllEmailStatusAsRead(): Cypress.Chainable<string> {
