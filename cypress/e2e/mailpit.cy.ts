@@ -25,6 +25,25 @@ describe("mailpit sending test", () => {
 		cy.mailpitSendMail({ to: [{ Email: "", Name: "To" }] });
 	});
 
+	it("can send email with cc, bcc, replyTo, and tags", () => {
+		cy.mailpitSendMail({
+			cc: [{ Email: "custom-cc@example.com", Name: "Custom CC" }],
+			bcc: ["custom-bcc@example.com"],
+			replyTo: [{ Email: "custom-reply@example.com", Name: "Custom Reply" }],
+			tags: ["tag1", "tag2"],
+		});
+		cy.mailpitGetMail().then((mail) => {
+			expect(mail.Cc).to.have.length(1);
+			expect(mail.Cc[0].Address).to.eq("custom-cc@example.com");
+			expect(mail.Bcc).to.have.length(1);
+			expect(mail.Bcc[0].Address).to.eq("custom-bcc@example.com");
+			expect(mail.ReplyTo).to.have.length(1);
+			expect(mail.ReplyTo[0].Address).to.eq("custom-reply@example.com");
+			expect(mail.Tags).to.include("tag1");
+			expect(mail.Tags).to.include("tag2");
+		});
+	});
+
 	it("can send multiple emails", () => {
 		const numberOfEmails = 10;
 		for (let i = 1; i <= numberOfEmails; i++) {
@@ -62,6 +81,49 @@ describe("mailpit query test", () => {
 			expect(result).to.have.property("total", numberOfEmails);
 			expect(result).to.have.property("count", numberOfEmails);
 			expect(result).to.have.property("unread");
+		});
+	});
+
+	it("can get the from address of the latest email", () => {
+		cy.mailpitSendMail({
+			from: { Email: "custom-from@example.com", Name: "Custom Sender" },
+		});
+		cy.mailpitGetMail()
+			.mailpitGetFromAddress()
+			.should("eq", "custom-from@example.com");
+	});
+
+	it("can get a specific email by ID", () => {
+		cy.mailpitSendMail({ subject: "First Email" });
+		cy.mailpitSendMail({ subject: "Second Email" });
+		cy.mailpitGetAllMails().then((result) => {
+			const targetMessage = result.messages.find(
+				(m) => m.Subject === "First Email",
+			);
+			expect(targetMessage).to.not.be.undefined;
+			cy.mailpitGetMail(targetMessage!.ID).then((mail) => {
+				expect(mail).to.have.property("Subject", "First Email");
+				expect(mail).to.have.property("ID", targetMessage!.ID);
+			});
+		});
+	});
+
+	it("can paginate through emails", () => {
+		for (let i = 0; i < 5; i++) {
+			cy.mailpitSendMail({ subject: `Paginated ${i}` });
+		}
+		cy.mailpitGetAllMails(0, 2).then((result) => {
+			expect(result.messages).to.have.length(2);
+			expect(result).to.have.property("total", 5);
+			expect(result).to.have.property("start", 0);
+		});
+		cy.mailpitGetAllMails(2, 2).then((result) => {
+			expect(result.messages).to.have.length(2);
+			expect(result).to.have.property("start", 2);
+		});
+		cy.mailpitGetAllMails(4, 2).then((result) => {
+			expect(result.messages).to.have.length(1);
+			expect(result).to.have.property("start", 4);
 		});
 	});
 
@@ -305,6 +367,29 @@ describe("mailpit read status test", () => {
 		cy.mailpitGetMail().mailpitSetStatusAsUnRead().should("eq", "ok");
 		cy.mailpitSearchEmails("Test").then((result) => {
 			expect(result.messages[0].Read).to.false;
+		});
+	});
+
+	it("can set read status for an array of messages", () => {
+		for (let i = 0; i < 3; i++) {
+			cy.mailpitSendMail({ subject: `Array Status ${i}` });
+		}
+		cy.mailpitGetAllMails().then((result) => {
+			for (const msg of result.messages) {
+				expect(msg.Read).to.be.false;
+			}
+			cy.wrap(result.messages).mailpitSetStatusAsRead().should("eq", "ok");
+		});
+		cy.mailpitGetAllMails().then((result) => {
+			for (const msg of result.messages) {
+				expect(msg.Read).to.be.true;
+			}
+			cy.wrap(result.messages).mailpitSetStatusAsUnRead().should("eq", "ok");
+		});
+		cy.mailpitGetAllMails().then((result) => {
+			for (const msg of result.messages) {
+				expect(msg.Read).to.be.false;
+			}
 		});
 	});
 
