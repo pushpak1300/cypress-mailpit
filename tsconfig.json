@@ -1,17 +1,13 @@
 {
-  "compilerOptions": {
-    "baseUrl": ".",
-    "target": "es5",
-    "lib": ["es5", "dom"],
-    "types": ["cypress","node"],
-    "strict": true,
-    "allowSyntheticDefaultImports": true
-  },
-  "include": [
-    "index.ts",
-    "cypress.d.ts"
-  ],
-  "exclude": [
-    "node_modules"
-  ]
+	"compilerOptions": {
+		"baseUrl": ".",
+		"target": "es5",
+		"lib": ["es5", "dom"],
+		"types": ["cypress", "node"],
+		"strict": true,
+		"skipLibCheck": true,
+		"allowSyntheticDefaultImports": true
+	},
+	"include": ["index.ts", "src/**/*.ts", "cypress.d.ts"],
+	"exclude": ["node_modules"]
 }

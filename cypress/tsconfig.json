@@ -1,14 +1,10 @@
 {
-  "compilerOptions": {
-    "target": "es5",
-    "lib": ["es5", "dom"],
-    "types": ["cypress","node"],
-    "strict": true,
-    "allowSyntheticDefaultImports": true
-  },
-  "include": [
-    "../cypress.config.ts",
-    "**/*.ts",
-    "../cypress.d.ts"
-  ],
+	"compilerOptions": {
+		"target": "es5",
+		"lib": ["es5", "dom"],
+		"types": ["cypress", "node"],
+		"strict": true,
+		"allowSyntheticDefaultImports": true
+	},
+	"include": ["../cypress.config.ts", "**/*.ts", "../cypress.d.ts"]
 }
