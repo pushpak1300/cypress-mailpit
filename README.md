@@ -75,12 +75,12 @@ Include this package into your Cypress command file:
 import 'cypress-mailpit';
 ```
 
-Add the base URL of your Mailpit installation in the `e2e` block of your `cypress.config.ts` / `cypress.config.js`:
+Add the base URL of your Mailpit installation in the `expose` block of your `cypress.config.ts` / `cypress.config.js`:
 
 ```typescript
 export default defineConfig({
   projectId: "****",
-  env: {
+  expose: {
     MAILPIT_URL: "http://localhost:8025",
   },
 });
@@ -88,14 +88,35 @@ export default defineConfig({
 
 ### Mailpit authentication (Basic Auth)
 
-Add `MAILPIT_USERNAME` and `MAILPIT_PASSWORD` in Cypress env config:
+Add `MAILPIT_USERNAME` and `MAILPIT_PASSWORD` in the `env` block of your Cypress config:
 
-```json
-{
-  "MAILPIT_USERNAME": "mailpit username",
-  "MAILPIT_PASSWORD": "mailpit password"
-}
+```typescript
+export default defineConfig({
+  env: {
+    MAILPIT_USERNAME: "mailpit username",
+    MAILPIT_PASSWORD: "mailpit password",
+  },
+});
 ```
+
+### Migrating to v2
+
+v2 requires **Cypress >= 15.10.0**. The main change is that `MAILPIT_URL` has moved from `env` to `expose` in your Cypress config:
+
+```diff
+ export default defineConfig({
++  expose: {
++    MAILPIT_URL: "http://localhost:8025",
++  },
+   env: {
+-    MAILPIT_URL: "http://localhost:8025",
+     MAILPIT_USERNAME: "admin",
+     MAILPIT_PASSWORD: "admin",
+   },
+ });
+```
+
+`Cypress.expose()` is a synchronous API for non-sensitive values, while `cy.env()` is used for sensitive credentials like passwords. No changes are needed to your test code — all `cy.mailpitXxx()` commands work the same as before.
 
 ## Commands
 

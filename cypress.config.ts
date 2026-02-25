@@ -7,9 +7,11 @@ export default defineConfig({
 	e2e: {
 		setupNodeEvents(_on, _config) {},
 	},
+	expose: {
+		MAILPIT_URL: "http://localhost:8025",
+	},
 	env: {
 		BASE_URL: "http://localhost:8025",
-		MAILPIT_URL: "http://localhost:8025",
 		MAILPIT_USERNAME: "admin",
 		MAILPIT_PASSWORD: "admin",
 	},
