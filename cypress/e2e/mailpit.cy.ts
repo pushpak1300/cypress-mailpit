@@ -88,18 +88,14 @@ describe("mailpit query test", () => {
 		cy.mailpitSendMail({
 			from: { Email: "custom-from@example.com", Name: "Custom Sender" },
 		});
-		cy.mailpitGetMail()
-			.mailpitGetFromAddress()
-			.should("eq", "custom-from@example.com");
+		cy.mailpitGetMail().mailpitGetFromAddress().should("eq", "custom-from@example.com");
 	});
 
 	it("can get a specific email by ID", () => {
 		cy.mailpitSendMail({ subject: "First Email" });
 		cy.mailpitSendMail({ subject: "Second Email" });
 		cy.mailpitGetAllMails().then((result) => {
-			const targetMessage = result.messages.find(
-				(m) => m.Subject === "First Email",
-			);
+			const targetMessage = result.messages.find((m) => m.Subject === "First Email");
 			expect(targetMessage).to.not.be.undefined;
 			cy.mailpitGetMail(targetMessage!.ID).then((mail) => {
 				expect(mail).to.have.property("Subject", "First Email");
