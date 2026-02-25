@@ -52,33 +52,72 @@ class MailpitCommands {
 			const user = (env as Record<string, string>).MAILPIT_USERNAME;
 			const pass = (env as Record<string, string>).MAILPIT_PASSWORD;
 			if (user && pass) {
-				return cy.wrap<{ user: string; pass: string } | undefined>({ user, pass });
+				return cy.wrap<{ user: string; pass: string } | undefined>({ user, pass }, { log: false });
 			}
-			return cy.wrap<{ user: string; pass: string } | undefined>(undefined);
+			return cy.wrap<{ user: string; pass: string } | undefined>(undefined, { log: false });
 		});
 	}
 
 	private request(options: Partial<Cypress.RequestOptions>): Cypress.Chainable<Cypress.Response<unknown>> {
 		return this.resolveAuth().then((auth) => {
-			return cy.request({ ...options, auth });
+			return cy.request({ ...options, auth, log: false });
 		});
 	}
 
 	mailpitGetAllMails(start = 0, limit = 50): Cypress.Chainable<MessagesSummary> {
+		let yielded: MessagesSummary;
+		Cypress.log({
+			name: "mailpitGetAllMails",
+			displayName: "getAllMails",
+			message: "",
+			consoleProps: () => ({
+				Yielded: yielded,
+				"Messages Count": yielded?.messages_count,
+			}),
+		});
 		return this.request({
 			method: "GET",
 			url: this.mailpitUrl(`/v1/messages?start=${start}&limit=${limit}`),
-		}).then((response) => response.body as MessagesSummary);
+		}).then((response) => {
+			yielded = response.body as MessagesSummary;
+			return yielded;
+		});
 	}
 
 	mailpitGetMail(id = "latest"): Cypress.Chainable<Message> {
+		let yielded: Message;
+		Cypress.log({
+			name: "mailpitGetMail",
+			displayName: "getMail",
+			message: id,
+			consoleProps: () => ({
+				ID: id,
+				Yielded: yielded,
+			}),
+		});
 		return this.request({
 			method: "GET",
 			url: this.mailpitUrl(`/v1/message/${id}`),
-		}).then((response) => response.body as Message);
+		}).then((response) => {
+			yielded = response.body as Message;
+			return yielded;
+		});
 	}
 
 	mailpitSendMail(options?: SendEmailOptions): Cypress.Chainable<{ ID: string }> {
+		let yielded: { ID: string };
+		const to = options?.to ?? [{ Email: "jane@example.com", Name: "Jane" }];
+		const subject = options?.subject ?? "Hello Mailpit";
+		Cypress.log({
+			name: "mailpitSendMail",
+			displayName: "sendMail",
+			message: subject,
+			consoleProps: () => ({
+				Subject: subject,
+				To: to.map((r) => r.Email).join(", "),
+				Yielded: yielded,
+			}),
+		});
 		const body = {
 			Attachments: options?.attachments ?? [],
 			Bcc: options?.bcc ?? ["bcc@example.com"],
@@ -87,19 +126,33 @@ class MailpitCommands {
 			HTML: options?.htmlBody ?? "<p>hello from mailpit</p>",
 			Headers: options?.headers ?? {},
 			ReplyTo: options?.replyTo ?? [{ Email: "replyto@example.com", Name: "ReplyTo" }],
-			Subject: options?.subject ?? "Hello Mailpit",
+			Subject: subject,
 			Tags: options?.tags ?? [],
 			Text: options?.textBody ?? "hello from mailpit",
-			To: options?.to ?? [{ Email: "jane@example.com", Name: "Jane" }],
+			To: to,
 		};
 		return this.request({
 			method: "POST",
 			url: this.mailpitUrl("/v1/send"),
 			body: body,
-		}).then((response) => response.body as { ID: string });
+		}).then((response) => {
+			yielded = response.body as { ID: string };
+			return yielded;
+		});
 	}
 
 	mailpitSearchEmails(query: string, start = 0, limit = 50): Cypress.Chainable<MessagesSummary> {
+		let yielded: MessagesSummary;
+		Cypress.log({
+			name: "mailpitSearchEmails",
+			displayName: "searchEmails",
+			message: query,
+			consoleProps: () => ({
+				Query: query,
+				Yielded: yielded,
+				"Messages Count": yielded?.messages_count,
+			}),
+		});
 		return this.request({
 			method: "GET",
 			url: this.mailpitUrl("/v1/search"),
@@ -108,11 +161,28 @@ class MailpitCommands {
 				start: start,
 				limit: limit,
 			},
-		}).then((response) => response.body as MessagesSummary);
+		}).then((response) => {
+			yielded = response.body as MessagesSummary;
+			return yielded;
+		});
 	}
 
 	mailpitGetEmailsBySubject(subject: string, start = 0, limit = 50): Cypress.Chainable<MessagesSummary> {
-		return this.mailpitSearchEmails(`subject:${subject}`, start, limit);
+		let yielded: MessagesSummary;
+		Cypress.log({
+			name: "mailpitGetEmailsBySubject",
+			displayName: "getEmailsBySubject",
+			message: subject,
+			consoleProps: () => ({
+				Subject: subject,
+				Yielded: yielded,
+				"Messages Count": yielded?.messages_count,
+			}),
+		});
+		return this.searchEmails(`subject:${subject}`, start, limit).then((result) => {
+			yielded = result;
+			return result;
+		});
 	}
 
 	mailpitHasEmailsBySearch(
@@ -121,11 +191,25 @@ class MailpitCommands {
 		limit = 50,
 		options: { timeout?: number; interval?: number } = {},
 	): Cypress.Chainable<MessagesSummary> {
+		let yielded: MessagesSummary;
+		Cypress.log({
+			name: "mailpitHasEmailsBySearch",
+			displayName: "hasEmailsBySearch",
+			message: query,
+			consoleProps: () => ({
+				Query: query,
+				Yielded: yielded,
+				"Messages Count": yielded?.messages_count,
+			}),
+		});
 		return this.waitForCondition(
-			() => this.mailpitSearchEmails(query, start, limit),
+			() => this.searchEmails(query, start, limit),
 			(result) => result.messages_count > 0,
 			options,
-		);
+		).then((result) => {
+			yielded = result;
+			return result;
+		});
 	}
 
 	mailpitNotHasEmailsBySearch(
@@ -134,11 +218,25 @@ class MailpitCommands {
 		limit = 50,
 		options: { timeout?: number; interval?: number } = {},
 	): Cypress.Chainable<MessagesSummary> {
+		let yielded: MessagesSummary;
+		Cypress.log({
+			name: "mailpitNotHasEmailsBySearch",
+			displayName: "notHasEmailsBySearch",
+			message: query,
+			consoleProps: () => ({
+				Query: query,
+				Yielded: yielded,
+				"Messages Count": yielded?.messages_count,
+			}),
+		});
 		return this.waitForCondition(
-			() => this.mailpitSearchEmails(query, start, limit),
+			() => this.searchEmails(query, start, limit),
 			(result) => result.messages_count === 0,
 			options,
-		);
+		).then((result) => {
+			yielded = result;
+			return result;
+		});
 	}
 
 	mailpitHasEmailsBySubject(
@@ -147,11 +245,25 @@ class MailpitCommands {
 		limit = 50,
 		options: { timeout?: number; interval?: number } = {},
 	): Cypress.Chainable<MessagesSummary> {
+		let yielded: MessagesSummary;
+		Cypress.log({
+			name: "mailpitHasEmailsBySubject",
+			displayName: "hasEmailsBySubject",
+			message: subject,
+			consoleProps: () => ({
+				Subject: subject,
+				Yielded: yielded,
+				"Messages Count": yielded?.messages_count,
+			}),
+		});
 		return this.waitForCondition(
-			() => this.mailpitGetEmailsBySubject(subject, start, limit),
+			() => this.searchEmails(`subject:${subject}`, start, limit),
 			(result) => result.messages_count > 0,
 			options,
-		);
+		).then((result) => {
+			yielded = result;
+			return result;
+		});
 	}
 
 	mailpitNotHasEmailsBySubject(
@@ -160,15 +272,43 @@ class MailpitCommands {
 		limit = 50,
 		options: { timeout?: number; interval?: number } = {},
 	): Cypress.Chainable<MessagesSummary> {
+		let yielded: MessagesSummary;
+		Cypress.log({
+			name: "mailpitNotHasEmailsBySubject",
+			displayName: "notHasEmailsBySubject",
+			message: subject,
+			consoleProps: () => ({
+				Subject: subject,
+				Yielded: yielded,
+				"Messages Count": yielded?.messages_count,
+			}),
+		});
 		return this.waitForCondition(
-			() => this.mailpitGetEmailsBySubject(subject, start, limit),
+			() => this.searchEmails(`subject:${subject}`, start, limit),
 			(result) => result.messages_count === 0,
 			options,
-		);
+		).then((result) => {
+			yielded = result;
+			return result;
+		});
 	}
 
 	mailpitGetEmailsByTo(email: string, start = 0, limit = 50): Cypress.Chainable<MessagesSummary> {
-		return this.mailpitSearchEmails(`to:${email}`, start, limit);
+		let yielded: MessagesSummary;
+		Cypress.log({
+			name: "mailpitGetEmailsByTo",
+			displayName: "getEmailsByTo",
+			message: email,
+			consoleProps: () => ({
+				Email: email,
+				Yielded: yielded,
+				"Messages Count": yielded?.messages_count,
+			}),
+		});
+		return this.searchEmails(`to:${email}`, start, limit).then((result) => {
+			yielded = result;
+			return result;
+		});
 	}
 
 	mailpitHasEmailsByTo(
@@ -177,11 +317,25 @@ class MailpitCommands {
 		limit = 50,
 		options: { timeout?: number; interval?: number } = {},
 	): Cypress.Chainable<MessagesSummary> {
+		let yielded: MessagesSummary;
+		Cypress.log({
+			name: "mailpitHasEmailsByTo",
+			displayName: "hasEmailsByTo",
+			message: email,
+			consoleProps: () => ({
+				Email: email,
+				Yielded: yielded,
+				"Messages Count": yielded?.messages_count,
+			}),
+		});
 		return this.waitForCondition(
-			() => this.mailpitGetEmailsByTo(email, start, limit),
+			() => this.searchEmails(`to:${email}`, start, limit),
 			(result) => result.messages_count > 0,
 			options,
-		);
+		).then((result) => {
+			yielded = result;
+			return result;
+		});
 	}
 
 	mailpitNotHasEmailsByTo(
@@ -190,14 +344,34 @@ class MailpitCommands {
 		limit = 50,
 		options: { timeout?: number; interval?: number } = {},
 	): Cypress.Chainable<MessagesSummary> {
+		let yielded: MessagesSummary;
+		Cypress.log({
+			name: "mailpitNotHasEmailsByTo",
+			displayName: "notHasEmailsByTo",
+			message: email,
+			consoleProps: () => ({
+				Email: email,
+				Yielded: yielded,
+				"Messages Count": yielded?.messages_count,
+			}),
+		});
 		return this.waitForCondition(
-			() => this.mailpitGetEmailsByTo(email, start, limit),
+			() => this.searchEmails(`to:${email}`, start, limit),
 			(result) => result.messages_count === 0,
 			options,
-		);
+		).then((result) => {
+			yielded = result;
+			return result;
+		});
 	}
 
 	mailpitDeleteAllEmails(): Cypress.Chainable<Cypress.Response<void>> {
+		Cypress.log({
+			name: "mailpitDeleteAllEmails",
+			displayName: "deleteAllEmails",
+			message: "",
+			consoleProps: () => ({}),
+		});
 		return this.request({
 			method: "DELETE",
 			url: this.mailpitUrl("/v1/messages"),
@@ -205,6 +379,14 @@ class MailpitCommands {
 	}
 
 	mailpitDeleteEmailsBySearch(query: string): Cypress.Chainable<Cypress.Response<void>> {
+		Cypress.log({
+			name: "mailpitDeleteEmailsBySearch",
+			displayName: "deleteEmailsBySearch",
+			message: query,
+			consoleProps: () => ({
+				Query: query,
+			}),
+		});
 		return this.request({
 			method: "DELETE",
 			url: this.mailpitUrl("/v1/search"),
@@ -216,27 +398,74 @@ class MailpitCommands {
 
 	// Single Mail Assertions
 	mailpitGetSubject(message: Message): Cypress.Chainable<string> {
-		return cy.wrap(message.Subject);
+		Cypress.log({
+			name: "mailpitGetSubject",
+			displayName: "getSubject",
+			message: message.Subject,
+			consoleProps: () => ({
+				Yielded: message.Subject,
+			}),
+		});
+		return cy.wrap(message.Subject, { log: false });
 	}
 
 	mailpitGetRecipientAddress(message: Message): Cypress.Chainable<Array<string>> {
-		return cy.wrap(message.To.map((recipient) => recipient.Address));
+		const addresses = message.To.map((recipient) => recipient.Address);
+		Cypress.log({
+			name: "mailpitGetRecipientAddress",
+			displayName: "getRecipientAddress",
+			message: addresses.join(", "),
+			consoleProps: () => ({
+				Yielded: addresses,
+			}),
+		});
+		return cy.wrap(addresses, { log: false });
 	}
 
 	mailpitGetFromAddress(message: Message): Cypress.Chainable<string> {
-		return cy.wrap(message.From.Address);
+		Cypress.log({
+			name: "mailpitGetFromAddress",
+			displayName: "getFromAddress",
+			message: message.From.Address,
+			consoleProps: () => ({
+				Yielded: message.From.Address,
+			}),
+		});
+		return cy.wrap(message.From.Address, { log: false });
 	}
 
 	mailpitGetAttachments(message: Message): Cypress.Chainable<Array<string>> {
-		return cy.wrap(message.Attachments.map((attachment) => attachment.FileName));
+		const filenames = message.Attachments.map((attachment) => attachment.FileName);
+		Cypress.log({
+			name: "mailpitGetAttachments",
+			displayName: "getAttachments",
+			message: filenames.join(", "),
+			consoleProps: () => ({
+				Yielded: filenames,
+			}),
+		});
+		return cy.wrap(filenames, { log: false });
 	}
 
 	mailpitGetMailSpamAssassinSummary(message: Message): Cypress.Chainable<SpamAssassin> {
 		const messageId = message.ID;
+		let yielded: SpamAssassin;
+		Cypress.log({
+			name: "mailpitGetMailSpamAssassinSummary",
+			displayName: "getSpamSummary",
+			message: "",
+			consoleProps: () => ({
+				"Message ID": messageId,
+				Yielded: yielded,
+			}),
+		});
 		return this.request({
 			method: "GET",
 			url: this.mailpitUrl(`/v1/message/${messageId}/sa-check`),
-		}).then((response) => response.body as SpamAssassin);
+		}).then((response) => {
+			yielded = response.body as SpamAssassin;
+			return yielded;
+		});
 	}
 
 	/**
@@ -251,18 +480,44 @@ class MailpitCommands {
 
 	mailpitGetMailHTMlBody(message: Message): Cypress.Chainable<string> {
 		const messageId = message.ID;
+		let yielded: string;
+		Cypress.log({
+			name: "mailpitGetMailHTMlBody",
+			displayName: "getMailHTMLBody",
+			message: "",
+			consoleProps: () => ({
+				"Message ID": messageId,
+				Yielded: yielded,
+			}),
+		});
 		return this.request({
 			method: "GET",
 			url: this.mailpitUrl(`/view/${messageId}.html`, false),
-		}).then((response) => response.body as string);
+		}).then((response) => {
+			yielded = response.body as string;
+			return yielded;
+		});
 	}
 
 	mailpitGetMailTextBody(message: Message): Cypress.Chainable<string> {
 		const messageId = message.ID;
+		let yielded: string;
+		Cypress.log({
+			name: "mailpitGetMailTextBody",
+			displayName: "getMailTextBody",
+			message: "",
+			consoleProps: () => ({
+				"Message ID": messageId,
+				Yielded: yielded,
+			}),
+		});
 		return this.request({
 			method: "GET",
 			url: this.mailpitUrl(`/view/${messageId}.txt`, false),
-		}).then((response) => response.body as string);
+		}).then((response) => {
+			yielded = response.body as string;
+			return yielded;
+		});
 	}
 
 	private setReadStatus(
@@ -292,21 +547,57 @@ class MailpitCommands {
 	}
 
 	mailpitSetAllEmailStatusAsRead(): Cypress.Chainable<string> {
+		Cypress.log({
+			name: "mailpitSetAllEmailStatusAsRead",
+			displayName: "setAllAsRead",
+			message: "",
+			consoleProps: () => ({}),
+		});
 		return this.setReadStatus(null, true);
 	}
 
 	mailpitSetAllEmailStatusAsUnRead(): Cypress.Chainable<string> {
+		Cypress.log({
+			name: "mailpitSetAllEmailStatusAsUnRead",
+			displayName: "setAllAsUnRead",
+			message: "",
+			consoleProps: () => ({}),
+		});
 		return this.setReadStatus(null, false);
 	}
 
 	mailpitSetStatusAsRead(messages: Message[] | Message | MessageSummary[] | MessageSummary): Cypress.Chainable<string> {
+		Cypress.log({
+			name: "mailpitSetStatusAsRead",
+			displayName: "setAsRead",
+			message: "",
+			consoleProps: () => ({}),
+		});
 		return this.setReadStatus(messages, true);
 	}
 
 	mailpitSetStatusAsUnRead(
 		messages: Message[] | Message | MessageSummary[] | MessageSummary,
 	): Cypress.Chainable<string> {
+		Cypress.log({
+			name: "mailpitSetStatusAsUnRead",
+			displayName: "setAsUnRead",
+			message: "",
+			consoleProps: () => ({}),
+		});
 		return this.setReadStatus(messages, false);
+	}
+
+	private searchEmails(query: string, start = 0, limit = 50): Cypress.Chainable<MessagesSummary> {
+		return this.request({
+			method: "GET",
+			url: this.mailpitUrl("/v1/search"),
+			qs: {
+				query: query,
+				start: start,
+				limit: limit,
+			},
+		}).then((response) => response.body as MessagesSummary);
 	}
 
 	private waitForCondition<T>(
@@ -324,10 +615,10 @@ class MailpitCommands {
 		const check = (): Cypress.Chainable<T> => {
 			return fn().then((result) => {
 				if (condition(result)) {
-					return cy.wrap(result);
+					return cy.wrap(result, { log: false });
 				}
 				if (Date.now() - startTime < timeout) {
-					return cy.wait(interval).then(check);
+					return cy.wait(interval, { log: false }).then(check);
 				}
 
 				throw new Error(`Timed out after ${timeout}ms waiting for condition`);
