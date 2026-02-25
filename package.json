@@ -7,10 +7,11 @@
 	"scripts": {
 		"dev": "npm run build && npm run cy:dev",
 		"test": "cypress run --headless",
-		"check": "biome check",
-		"format": "biome format",
-		"lint": "biome lint",
-		"fix": "biome check --write",
+		"release": "standard-version",
+		"check": "oxlint && oxfmt --check",
+		"format": "oxfmt",
+		"lint": "oxlint",
+		"fix": "oxlint --fix && oxfmt",
 		"build": "tsc",
 		"cy:run": "cypress run --headless",
 		"cy:dev": "cypress open -b electron"
@@ -34,8 +35,9 @@
 	},
 	"homepage": "https://github.com/pushpak1300/cypress-mailpit#readme",
 	"devDependencies": {
-		"@biomejs/biome": "^2.4.4",
 		"cypress": "^15.11.0",
+		"oxfmt": "^0.7.0",
+		"oxlint": "^0.16.0",
 		"typescript": "^5.9.3"
 	}
 }

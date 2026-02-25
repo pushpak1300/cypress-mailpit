@@ -1,0 +1,7 @@
+{
+	"printWidth": 120,
+	"useTabs": true,
+	"tabWidth": 1,
+	"endOfLine": "lf",
+	"sortImports": true
+}
