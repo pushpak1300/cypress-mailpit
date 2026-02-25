@@ -9,7 +9,7 @@ jobs:
     - uses: actions/checkout@v4
     - name: Install dependencies
       run: npm install
-    - name: Run biome
+    - name: Run oxc
       run: npm run check
 
   cypress-tests:
