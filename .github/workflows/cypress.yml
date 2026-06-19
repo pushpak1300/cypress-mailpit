@@ -6,7 +6,7 @@ jobs:
   lint:
     runs-on: ubuntu-latest
     steps:
-    - uses: actions/checkout@v6
+    - uses: actions/checkout@v7
     - name: Install dependencies
       run: npm install
     - name: Run oxc
@@ -25,7 +25,7 @@ jobs:
       matrix:
         containers: [ 1 ]
     steps:
-    - uses: actions/checkout@v6
+    - uses: actions/checkout@v7
     - name: Cypress run
       uses: cypress-io/github-action@v7
       with:
