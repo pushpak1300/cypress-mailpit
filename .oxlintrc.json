@@ -2,5 +2,13 @@
 	"$schema": "./node_modules/oxlint/configuration_schema.json",
 	"categories": {
 		"correctness": "error"
-	}
+	},
+	"overrides": [
+		{
+			"files": ["cypress/**/*.ts"],
+			"rules": {
+				"no-unused-expressions": "off"
+			}
+		}
+	]
 }
