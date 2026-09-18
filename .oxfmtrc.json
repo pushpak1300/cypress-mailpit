@@ -3,5 +3,6 @@
 	"useTabs": true,
 	"tabWidth": 1,
 	"endOfLine": "lf",
-	"sortImports": true
+	"sortImports": true,
+	"ignorePatterns": ["**/*.md", "**/*.yml", "**/*.yaml", "**/*.json"]
 }
